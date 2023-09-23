@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
+import { FileProvider } from "./components/FileContext.tsx";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -17,7 +18,7 @@ const firebaseConfig = {
   projectId: "carbon-tracker-399904",
   storageBucket: "carbon-tracker-399904.appspot.com",
   messagingSenderId: "159251576211",
-  appId: "1:159251576211:web:db0bcfe78d3d8ead05e466"
+  appId: "1:159251576211:web:db0bcfe78d3d8ead05e466",
 };
 
 // Initialize Firestore
@@ -25,8 +26,10 @@ export const firestore = getFirestore(initializeApp(firebaseConfig));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <FileProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </FileProvider>
   </React.StrictMode>,
 );
