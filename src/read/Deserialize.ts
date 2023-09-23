@@ -4,6 +4,7 @@
 import { Location } from '../model/Location.ts';
 import { Route } from '../model/Route.ts';
 import { Activity } from '../model/Activity.ts';
+import { getMostProbableActivity } from '../utils/utils.ts';
 
 export class Deserialize {
   public static deserializeLocationRecords(rawData: string): Location[] {
@@ -48,6 +49,13 @@ export class Deserialize {
                     (activity: any) => new Activity(activity.activityType, activity.probability),
                 ),
             );
+            const mostProbableActivity = getMostProbableActivity(route);
+            // filter out routes that are not in a vehicle or walking/running/cycling
+            if ((mostProbableActivity ! == "IN_VEHICLE" || mostProbableActivity ! == "IN_PASSENGER_VEHICLE") || 
+                (mostProbableActivity ! == "WALKING" || mostProbableActivity ! == "RUNNING" || mostProbableActivity ! == "CYCLING") ||
+                (mostProbableActivity ! == "IN_BUS" || mostProbableActivity ! == "IN_TRAIN" || mostProbableActivity ! == "IN_SUBWAY")) {
+                continue;
+            }
 
             routeArr.push(route);
       }
@@ -56,3 +64,4 @@ export class Deserialize {
     return routeArr;
   }
 }
+
