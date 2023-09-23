@@ -10,12 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@zip.js/zip.js": "^2.7.29",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@types/google-map-react": "^2.1.8",
     "dotenv": "^16.3.1",
     "google-map-react": "^2.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
     "react-leaflet": "^4.2.1"
   },
   "devDependencies": {
