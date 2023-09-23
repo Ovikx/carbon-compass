@@ -56,7 +56,7 @@ export function Heatmap() {
 
   return (
     // Important! Always set the container height explicitly
-    <div className="h-screen">
+    <div className="h-110 w-110 mx-auto">
       <GoogleMapReact
         bootstrapURLKeys={{
           key: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
