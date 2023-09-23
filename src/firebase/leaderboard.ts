@@ -14,7 +14,7 @@ export async function getLeaderboardData(id: string): Promise<Leaderboard | null
 }
 
 
-async function saveLeader(lb: Leaderboard) {
+export async function saveLeader(lb: Leaderboard) {
     const lbDocumentRef = doc(firestore, 'leaderboard', lb.id);
     await setDoc(lbDocumentRef, {
         users: lb.users,

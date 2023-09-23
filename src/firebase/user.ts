@@ -2,7 +2,7 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { firestore } from '../main.tsx';
 import { User } from '../model/User.ts';
 
-async function getUser(id: string): Promise<User | null> {
+export async function getUser(id: string): Promise<User | null> {
   const userDocumentRef = doc(firestore, 'user', id);
   const userDocument = await getDoc(userDocumentRef);
 
@@ -13,7 +13,7 @@ async function getUser(id: string): Promise<User | null> {
   }
 }
 
-async function saveUser(user: User) {
+export async function saveUser(user: User) {
   const userDocumentRef = doc(firestore, 'user', user.id);
   await setDoc(userDocumentRef, {
       leaderboard: user.leaderboard,
