@@ -1,14 +1,41 @@
 import { NavLink } from "react-router-dom";
 
 export function NavBarComponent() {
-    return (
-        <header className="top-0 left-0 px-30 py-100 flex flex-row sticky mb-10 justify-between align-middle shadow-sm ">
-            <h2 className="text-2xl text-emerald-500 cursor-pointer font-extrabold">Carbon Tracker</h2>
-            <nav>
-                <a href="#" className="text-lg no-underline text-emerald-500 px-3 py-15 rounded-md mx-0 my-10 font-bold hover:bg-emerald-500 hover:rounded-lg hover:text-white">Home</a>
-                <a href="#" className="text-lg no-underline text-emerald-500 px-3 py-15 rounded-md mx-0 my-10 font-bold hover:bg-emerald-500 hover:rounded-lg hover:text-white">Leaderboard</a>
-                <a href="#" className="text-lg no-underline text-emerald-500 px-3 py-15 rounded-md mx-0 my-10 font-bold hover:bg-emerald-500 hover:rounded-lg hover:text-white">Tracker</a>
-            </nav>
-        </header>
-    )
+  return (
+    <nav className="fixed top-0 left-0 w-full bg-white">
+      <div className="container mx-auto px-4 py-2">
+        <div className="flex justify-between items-center mt-5">
+          <h2 className="text-2xl text-emerald-500 cursor-pointer font-extrabold">
+            Carbon Tracker
+          </h2>
+          <ul className="flex space-x-4">
+            <li>
+              <NavLink
+                to="/"
+                className="text-lg text-emerald-500 font-bold hover:text-emerald-700"
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/leaderboard"
+                className="text-lg text-emerald-500 font-bold hover:text-emerald-700"
+              >
+                Leaderboard
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/tracker"
+                className="text-lg text-emerald-500 font-bold hover:text-emerald-700"
+              >
+                Tracker
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
 }
