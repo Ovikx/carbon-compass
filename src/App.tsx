@@ -4,12 +4,19 @@ import { Home } from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
 import { Tracker } from "./pages/Tracker";
 import { Leaderboard } from "./pages/Leaderboard";
-import Background from "./assets/bg.svg";
+import { default as Background } from "./assets/bg.svg";
 
 function App() {
   return (
     <>
-      <div className="">
+      <div
+        className="relative"
+        style={{
+          backgroundImage: `url(${Background})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
         <NavBarComponent />
         <div className="mt-12">
           <Routes>
@@ -18,7 +25,6 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
           </Routes>
         </div>
-        <Background />
       </div>
     </>
   );
