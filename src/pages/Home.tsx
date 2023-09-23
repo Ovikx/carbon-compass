@@ -13,7 +13,7 @@ export function Home() {
           </div>
         </div>
 
-        <button className="flex transition-all flex-row ml-px mt-28  text-lg rounded-lg p-1 text-white font-semibold hover:bg-green-700 bg-green-600">
+        <button className="flex transition-all flex-row  mt-28  ml-98 text-lg rounded-lg p-1 text-white font-semibold hover:bg-green-700 bg-green-600">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="rounded-lg pt-1 hover:bg-green-700 fill-white"

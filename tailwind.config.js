@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      spacing: {
+        98: "25.5rem", // Define a custom margin size
+      },
+    },
   },
   plugins: [],
 };
