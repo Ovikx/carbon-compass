@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { getUsersFromLeaderboard } from "../firebase/controller";
 import { User } from "../model/User";
 import ClipLoader from "react-spinners/ClipLoader";
 import { motion } from "framer-motion";
