@@ -5,11 +5,10 @@ export function Home() {
         <div className="flex flex-col absolute left-10 pl-7">
           <p className="text-2xl">Track your Carbon Footprint,</p>
           <p className="text-2xl pr-[220px]">Smarter</p>
-        </div>
+        </div>  
       </div>
 
-      <form action="/action_page.php">
-        <input type = "file" id = "locationData" name="userData"/>
+        <input type = "file" id = "locationData" className="hidden" onChange={} name="userData"/>
         <button className="flex transition-all flex-row ml-72 mt-28 text-lg rounded-lg p-1 text-white font-semibold hover:bg-green-700 bg-green-600 ">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -22,7 +21,6 @@ export function Home() {
         </svg>
         <p className="pt-1 pb-1 pr-3">Upload!</p>
       </button>
-      </form>  
     </>
   );
 }
