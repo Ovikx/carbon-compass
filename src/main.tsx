@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,8 +20,8 @@ const firebaseConfig = {
   appId: "1:159251576211:web:db0bcfe78d3d8ead05e466"
 };
 
-// Initialize Firebase
-export const firebase = initializeApp(firebaseConfig);
+// Initialize Firestore
+export const firestore = getFirestore(initializeApp(firebaseConfig));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
