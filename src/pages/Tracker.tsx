@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
+import { default as Report } from "../assets/report.jpg";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
@@ -21,14 +22,23 @@ export function Tracker() {
   return (
     <div className="mt-40">
       <Parallax pages={4}>
-        <ParallaxLayer speed={2} factor={1}>
+        <ParallaxLayer
+          speed={1}
+          factor={1}
+          style={{
+            backgroundImage: `url(${Report})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
+        >
           <div className="flex flex-row justify-center align-middle">
-            <div>
-              <h1 className="left-align text-5xl font-bold">
-                Your Carbon Footprint Report
-              </h1>
-            </div>
+            <div className="flex flex-col justify-center align-middle"></div>
           </div>
+        </ParallaxLayer>
+        <ParallaxLayer offset={0.4} speed={0.05}>
+          <h1 className="left-align text-5xl font-bold text-white pt-90">
+            Your Carbon Footprint Report
+          </h1>
         </ParallaxLayer>
         <ParallaxLayer offset={1} speed={1}>
           <div className="left-align">
@@ -50,9 +60,6 @@ export function Tracker() {
                 backgroundSize: "cover",
                 height: "500px",
                 width: "500px",
-                // marginTop: "76px",
-                // top: 0,
-                // left: 0,
               }}
             ></div>
           </div>
