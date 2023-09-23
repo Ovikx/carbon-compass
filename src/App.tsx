@@ -15,6 +15,11 @@ function App() {
           backgroundImage: `url(${Background})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
+          height: "100vh",
+          width: "100vw",
+          position: "absolute",
+          top: 0,
+          left: 0,
         }}
       >
         <NavBarComponent />
