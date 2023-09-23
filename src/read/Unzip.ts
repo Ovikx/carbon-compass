@@ -4,16 +4,17 @@ import * as zip from "@zip.js/zip.js";
 import { Deserialize } from "./Deserialize.ts";
 import { Location } from "../model/Location.ts";
 import { Route } from "../model/Route.ts";
-import { Activity } from "../model/Activity.ts";
 
 export class Unzip {
-    public static async unzipLocationHistory(blob: Blob): Promise<void> {
+    public static async unzipLocationHistory(blob: Blob): Promise<{locations: Location[], routes: Map<string, Map<string, Route[]>>}>{
         // unzip using zip.js using filereader
         const reader = new zip.ZipReader(new zip.BlobReader(blob));
         const entries = await reader.getEntries();
         const locationPath = entries.find((entry) => entry.filename === "Takeout/Location History/Records.json");
-        const possibleLocation = (await locationPath?.getData?.(new zip.TextWriter()))
-        var locations: Location[] = [];
+        const possibleLocation = (await locationPath?.getData?.(new zip.TextWriter()));
+        
+        let locations: Location[] = [];
+
         if (possibleLocation) {
             locations = Deserialize.deserializeLocationRecords(possibleLocation);
         }
@@ -38,6 +39,11 @@ export class Unzip {
                 routes.get(year)?.get(month)?.push(...route);
             }
         }
+
+        return {
+            "locations": locations,
+            "routes": routes,
+        };
     }
 }
 
