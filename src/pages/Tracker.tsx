@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Heatmap } from "../components/Heatmap";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
@@ -7,11 +7,14 @@ import { CompositeData } from "../model/CompositeData";
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
   const fileContext = useContext(FileContext);
-  if (fileContext.file) {
-    Unzip.unzipLocationHistory(fileContext.file).then((res) => {
-      setData(res);
-    });
-  }
+
+  useEffect(() => {
+    if (fileContext.file) {
+      Unzip.unzipLocationHistory(fileContext.file).then((res) => {
+        setData(res);
+      });
+    }
+  }, [fileContext]);
 
   return (
     <div className="flex flex-col mt-36">
