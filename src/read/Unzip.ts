@@ -29,7 +29,7 @@ export class Unzip {
                 const route = Deserialize.deserializeRouteRecords(possibleRoute);
                 const date = routePath.filename.split("/")[4].split("_");
                 const year = date[0];
-                const month = date[1];
+                const month = date[1].split(".")[0];
                 if (!routes.has(year)) {
                     routes.set(year, new Map<string, Route[]>());
                 }
