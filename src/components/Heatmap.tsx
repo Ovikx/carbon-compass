@@ -1,6 +1,6 @@
-import GoogleMapReact from "google-map-react";
+import GoogleMapReact, { Heatmap } from "google-map-react";
 import { CompositeData } from "../model/CompositeData";
-import ClipLoader from "react-spinners/ClipLoader";
+//import ClipLoader from "react-spinners/ClipLoader";
 
 interface HeatmapData {
   positions: {
@@ -22,7 +22,7 @@ interface Props {
 function parseData(compositeData: CompositeData): HeatmapData {
   const resData: HeatmapData = {
     positions: [],
-    options: {},
+    options: { radius: 20, opacity: 1 },
   };
 
   console.log(compositeData);
@@ -30,6 +30,7 @@ function parseData(compositeData: CompositeData): HeatmapData {
     resData.positions.push({
       lat: loc.latitude,
       lng: loc.longitude,
+      weight: 10,
     });
   }
 
@@ -60,20 +61,21 @@ export function Heatmap(props: Props) {
     );
   };
 
-  const defaultProps = {
-    center: {
-      lat: 10.99835602,
-      lng: 77.01502627,
-    },
-    zoom: 11,
-  };
-
   // Return empty div if no data passed in yet
-  if (!props.compositeData)
-    return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
+  // if (!props.compositeData)
+  //   return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
 
   // Continue with heatmap data parsing
-  const heatmap = parseData(props.compositeData);
+  const heatmap: Heatmap = props.compositeData
+    ? parseData(props.compositeData)
+    : { positions: [], options: {} };
+
+  const defaultProps = props.compositeData
+    ? {
+        center: heatmap.positions[0],
+        zoom: 11,
+      }
+    : { center: { lat: 0, lng: 0 }, zoom: 11 };
 
   return (
     // Important! Always set the container height explicitly
@@ -86,7 +88,9 @@ export function Heatmap(props: Props) {
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
         heatmap={heatmap}
+        heatmapLibrary={true}
         onGoogleApiLoaded={({ map }) => apiIsLoaded(map)}
+        yesIWantToUseGoogleMapApiInternals={true}
       ></GoogleMapReact>
     </div>
   );
