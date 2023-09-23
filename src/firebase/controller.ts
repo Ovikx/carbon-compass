@@ -1,8 +1,8 @@
 import { User } from "../model/User";
 import { getLeaderboardData } from "./leaderboard";
-import { getUser } from "./user";
+import { getUser, saveUser } from "./user";
 
-async function getUsersFromLeaderboard(id: string): Promise<User[]> {
+export async function getUsersFromLeaderboard(id: string): Promise<User[]> {
   let lb = await getLeaderboardData(id);
   let users: User[] = [];
   if (!lb) {
@@ -19,4 +19,28 @@ async function getUsersFromLeaderboard(id: string): Promise<User[]> {
   });
 
   return users;
+}
+
+export async function registerUser(name: string, carbonSaved: number) {
+  let user = await getUser(name);
+  if (!user) {
+    user = new User(name, "", carbonSaved);
+    await saveUser(user);
+  }
+}
+
+export async function addCarbonSavedToUser(name: string, carbonSaved: number) {
+  let user = await getUser(name);
+  if (user) {
+    user.carbonSaved += carbonSaved;
+    await saveUser(user);
+  }
+}
+
+export async function addLeaderboardToUser(name: string, leaderboard: string) {
+  let user = await getUser(name);
+  if (user) {
+    user.leaderboard = leaderboard;
+    await saveUser(user);
+  }
 }
