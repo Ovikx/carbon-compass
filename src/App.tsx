@@ -3,18 +3,24 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { NavBarComponent } from './components/NavBarComponent'
+import { Home } from './pages/Home'
+import { Routes, Route } from "react-router-dom"
+import { Tracker } from './pages/Tracker'
+import { Leaderboard } from './pages/Leaderboard'
 
 function App() {
 
 
   return (
     <>
-      <NavBarComponent/>
-      <div>
-        <h1>Carbon Tracker</h1>
-        <p>Track your carbon footprint</p>
-        <p>Smarter</p>
+      <div className="bg-white/80">
+        <NavBarComponent/>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tracker" element={<Tracker />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
 
+        </Routes>
       </div>
       
     </>
