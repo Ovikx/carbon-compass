@@ -2,6 +2,12 @@ import { useState, useEffect } from "react";
 import { getUsersFromLeaderboard } from "../firebase/controller";
 import { User } from "../model/User";
 import ClipLoader from "react-spinners/ClipLoader";
+import { motion } from "framer-motion";
+const transition = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 1 } },
+  exit: { opacity: 0, transition: { duration: 1 } },
+};
 
 export function Leaderboard() {
   // leaderboard page for users to see how they compare to others
@@ -16,15 +22,26 @@ export function Leaderboard() {
   }, []);
   if (!users) {
     return (
-      <div>
+      <motion.div
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={transition}
+      >
         <h1>Loading...</h1>
         <ClipLoader color={"#ffffff"} loading={!users} size={150} />
-      </div>
+      </motion.div>
     );
   }
   return (
     users && (
-      <div className="flex flex-col">
+      <motion.div
+        className="flex flex-col"
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={transition}
+      >
         <div>
           <h1 className="text-4xl text-center text-slate-700 dark:text-slate-400 font-bold mt-10 mb-3">
             Leaderboard
@@ -53,7 +70,7 @@ export function Leaderboard() {
             })}
           </tbody>
         </table>
-      </div>
+      </motion.div>
     )
   );
 }
