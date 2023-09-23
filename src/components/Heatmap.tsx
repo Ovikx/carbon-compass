@@ -1,6 +1,8 @@
 import GoogleMapReact from "google-map-react";
+import { CompositeData } from "../model/CompositeData";
+import ClipLoader from "react-spinners/ClipLoader";
 
-interface IHeatmap {
+interface HeatmapData {
   positions: {
     lat: number;
     lng: number;
@@ -13,7 +15,28 @@ interface IHeatmap {
   };
 }
 
-export function Heatmap() {
+interface Props {
+  compositeData: CompositeData | null;
+}
+
+function parseData(compositeData: CompositeData): HeatmapData {
+  const resData: HeatmapData = {
+    positions: [],
+    options: {},
+  };
+
+  console.log(compositeData);
+  for (const loc of compositeData.locations) {
+    resData.positions.push({
+      lat: loc.latitude,
+      lng: loc.longitude,
+    });
+  }
+
+  return resData;
+}
+
+export function Heatmap(props: Props) {
   const apiIsLoaded = (map: any) => {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
@@ -36,6 +59,7 @@ export function Heatmap() {
       },
     );
   };
+
   const defaultProps = {
     center: {
       lat: 10.99835602,
@@ -44,15 +68,12 @@ export function Heatmap() {
     zoom: 11,
   };
 
-  const heatmap: IHeatmap = {
-    positions: [
-      {
-        lat: 10.99835602,
-        lng: 77.01502627,
-      },
-    ],
-    options: {},
-  };
+  // Return empty div if no data passed in yet
+  if (!props.compositeData)
+    return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
+
+  // Continue with heatmap data parsing
+  const heatmap = parseData(props.compositeData);
 
   return (
     // Important! Always set the container height explicitly

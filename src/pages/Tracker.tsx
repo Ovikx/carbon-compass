@@ -1,8 +1,20 @@
+import { useContext, useState } from "react";
 import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
+import { FileContext } from "../components/FileContext";
+import { Unzip } from "../read/Unzip";
+import { CompositeData } from "../model/CompositeData";
 
 export function Tracker() {
+  const [data, setData] = useState<CompositeData | null>(null);
+  const fileContext = useContext(FileContext);
+  if (fileContext.file) {
+    Unzip.unzipLocationHistory(fileContext.file).then((res) => {
+      setData(res);
+    });
+  }
+
   return (
     <div className="mt-40">
       <Parallax pages={4}>
@@ -18,7 +30,7 @@ export function Tracker() {
         <ParallaxLayer offset={1} speed={1}>
           <div className="left-align">
             <h2>Map</h2>
-            <Heatmap />
+            <Heatmap compositeData={data} />
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
