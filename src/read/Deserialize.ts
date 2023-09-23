@@ -1,15 +1,13 @@
 // read in Google Location Takeout data and deserialize it
 // into a list of Location objects
 
-import * as fs from 'fs';
 import { Location } from '../model/Location.ts';
 import { Route } from '../model/Route.ts';
 import { Activity } from '../model/Activity.ts';
 
 export class Deserialize {
-  public static deserializeLocationRecords(path: string): Location[] {
-    const recordsContents = fs.readFileSync(path, 'utf8');
-    const recordsJson = JSON.parse(recordsContents);
+  public static deserializeLocationRecords(rawData: string): Location[] {
+    const recordsJson = JSON.parse(rawData);
     const locations = recordsJson.locations;
 
     const locationArr = [];
@@ -28,9 +26,8 @@ export class Deserialize {
     return locationArr;
   }
 
-  public static deserializeRouteRecords(path: string): Route[] {
-    const routesContents = fs.readFileSync(path, 'utf8');
-    const routesJson = JSON.parse(routesContents);
+  public static deserializeRouteRecords(rawData: string): Route[] {
+    const routesJson = JSON.parse(rawData);
     const timelineObjects = routesJson.timelineObjects;
 
     const routeArr = [];
@@ -55,7 +52,7 @@ export class Deserialize {
             routeArr.push(route);
       }
     }
-    
+
     return routeArr;
   }
 }
