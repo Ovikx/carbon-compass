@@ -35,4 +35,41 @@ export function getMostProbableActivity(route: Route): string {
   }
   return mostProbableActivity;
 }
+// material-ui icons
+export function getIconFromActivityName(activity: string) {
+  switch(activity) {
+    case "IN_VEHICLE":
+    case "IN_PASSENGER_VEHICLE":
+      return "directions_car";
+    case "WALKING":
+    case "RUNNING":
+    case "CYCLING":
+      return "directions_walk";
+    case "IN_BUS":
+      return "directions_bus";
+    case "IN_TRAIN":
+    case "IN_SUBWAY":
+      return "train";
+    default:
+      return "question_mark";
+  }
+}
 
+export function getNameFromActivityName(activity: string) {
+  switch(activity) {
+    case "IN_VEHICLE":
+    case "IN_PASSENGER_VEHICLE":
+      return "Car";
+    case "WALKING":
+    case "RUNNING":
+    case "CYCLING":
+      return "On Foot";
+    case "IN_BUS":
+      return "Bus";
+    case "IN_TRAIN":
+    case "IN_SUBWAY":
+      return "Train";
+    default:
+      return "Invalid";
+  }
+}
