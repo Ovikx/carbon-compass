@@ -6,6 +6,7 @@ import { default as Report } from "../assets/report.jpg";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
+import { Table } from "../components/Table";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -67,6 +68,7 @@ export function Tracker() {
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align pointer-events-none">
             <h2 className="left-align">Table</h2>
+            {!!data ? <Table data={data.routes}/> : <p>Loading...</p>}
           </div>
         </ParallaxLayer>
       </Parallax>
