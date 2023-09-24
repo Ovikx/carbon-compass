@@ -7,9 +7,9 @@ import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
-import { flattenHierarchy } from "../utils/utils";
 import Modal from "react-modal";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
+import { Category } from "../components/Category";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -18,7 +18,6 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
-        console.log(flattenHierarchy(res.routes));
       });
     }
   }, [fileContext.file]);
@@ -48,6 +47,7 @@ export function Tracker() {
               Your Carbon Heatmap
             </h1>
             <HeatmapWrapper compositeData={data} />
+            {!!data ? <Category data={data?.routes} /> : <></>}
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
