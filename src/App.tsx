@@ -4,7 +4,6 @@ import { Home } from "./pages/Home";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Tracker } from "./pages/Tracker";
 import { Leaderboard } from "./pages/Leaderboard";
-import { default as Background } from "./assets/bg2.svg";
 import { AnimatePresence } from "framer-motion";
 
 function App() {

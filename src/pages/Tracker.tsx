@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
@@ -9,13 +9,14 @@ import { CompositeData } from "../model/CompositeData";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
-  const ref: any = useRef();
   const fileContext = useContext(FileContext);
-  if (fileContext.file) {
-    Unzip.unzipLocationHistory(fileContext.file).then((res) => {
-      setData(res);
-    });
-  }
+  useEffect(() => {
+    if (fileContext.file) {
+      Unzip.unzipLocationHistory(fileContext.file).then((res) => {
+        setData(res);
+      });
+    }
+  }, [fileContext.file]);
 
   return (
     <div className="mt-24">
@@ -36,12 +37,7 @@ export function Tracker() {
             Your Carbon Footprint Report
           </h1>
         </ParallaxLayer>
-        <ParallaxLayer
-          offset={1}
-          speed={1}
-          style={{ backgroundColor: "" }}
-          onClick={() => ref.current.scrollTo?.(3)}
-        >
+        <ParallaxLayer offset={1} speed={1} style={{ backgroundColor: "" }}>
           <div className="flex flex-row justify-center align-middle">
             <div className="flex flex-col mr-5">
               <h1 className="left-align text-2xl font-bold pt-90  mb-5">
