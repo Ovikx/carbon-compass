@@ -8,7 +8,7 @@ import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 // import { Table } from "../components/Table";
 import TopTrips from "../components/TopTrips";
-import Modal from "react-modal";
+// import Modal from "@mui/material/Modal";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);

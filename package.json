@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@googlemaps/react-wrapper": "^1.1.35",
+    "@headlessui/react": "^1.7.17",
     "@react-spring/parallax": "^9.7.3",
     "@tanstack/react-table": "^8.10.1",
     "@types/google-map-react": "^2.1.8",
@@ -23,7 +24,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-leaflet": "^4.2.1",
-    "react-modal": "^3.16.1",
     "react-router-dom": "^6.16.0",
     "react-spinners": "^0.13.8",
     "react-table": "^7.8.0"
