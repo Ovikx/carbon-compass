@@ -6,8 +6,8 @@ import { default as Report } from "../assets/report.jpg";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
-import { Table } from "../components/Table";
 import TopTrips from "../components/TopTrips";
+import { flattenHierarchy } from "../utils/utils";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -16,6 +16,7 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
+        console.log(flattenHierarchy(res.routes));
       });
     }
   }, [fileContext.file]);
@@ -74,7 +75,6 @@ export function Tracker() {
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align pointer-events-none">
             <h2 className="left-align">Table</h2>
-            {!!data ? <Table data={data.routes}/> : <p>Loading...</p>}
           </div>
         </ParallaxLayer>
       </Parallax>
