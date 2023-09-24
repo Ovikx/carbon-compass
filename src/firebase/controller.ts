@@ -25,6 +25,7 @@ export async function registerUser(name: string, carbonSaved: number) {
   let user = await getUser(name);
   if (!user) {
     user = new User(name, "", carbonSaved);
+    console.log(user);
     await saveUser(user);
   }
 }
@@ -39,6 +40,7 @@ export async function addCarbonSavedToUser(name: string, carbonSaved: number) {
 
 export async function addLeaderboardToUser(name: string, leaderboard: string) {
   let user = await getUser(name);
+
   if (user) {
     user.leaderboard = leaderboard;
     await saveUser(user);
@@ -50,6 +52,8 @@ export async function addLeaderboardToUser(name: string, leaderboard: string) {
   if (!lb) {
     return;
   }
+
+  console.log(lb);
   lb.users.push(user.id);
   await saveLeader(lb);
 }

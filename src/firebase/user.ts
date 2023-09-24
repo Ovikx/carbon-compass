@@ -18,7 +18,7 @@ export async function getUser(id: string): Promise<User | null> {
 }
 
 export async function saveUser(user: User) {
-  const userDocumentRef = doc(firestore, "user", user.id);
+  const userDocumentRef = doc(firestore, "users", user.id);
   await setDoc(userDocumentRef, {
     leaderboard: user.leaderboard,
     carbonSaved: user.carbonSaved,

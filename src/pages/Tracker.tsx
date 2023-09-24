@@ -31,7 +31,6 @@ const transition = {
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [username, setUsername] = useState("");
   const [carbonSaved, setCarbonSaved] = useState(0);
   const [carbonWasted, setCarbonWasted] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -350,11 +349,6 @@ export function Tracker() {
                 variant="outlined"
                 className="pr-10"
                 value={inputValue}
-                onSubmit={async () => {
-                  setUsername(inputValue);
-                  await registerUser(username, carbonSaved);
-                  await addLeaderboardToUser(username, leaderboardValue);
-                }}
                 onChange={(e) => {
                   setInputValue(e.target.value);
                 }}
@@ -368,7 +362,6 @@ export function Tracker() {
                 label="Leaderboard Invite"
                 variant="outlined"
                 value={leaderboardValue}
-                onSubmit={() => {}}
                 onChange={(e) => {
                   setLeaderboardValue(e.target.value);
                 }}
@@ -376,11 +369,9 @@ export function Tracker() {
               <div className="my-2 ml-5">
                 <Button
                   variant="contained"
-                  onClick={() => {
-                    console.log(inputValue);
-                    setUsername(inputValue);
-                    registerUser(username, carbonSaved);
-                    addLeaderboardToUser(username, "group 1");
+                  onClick={async () => {
+                    await registerUser(inputValue, carbonSaved);
+                    await addLeaderboardToUser(inputValue, leaderboardValue);
                     console.log("submitted");
                     setSubmitted(true);
                     console.log(submitted);
