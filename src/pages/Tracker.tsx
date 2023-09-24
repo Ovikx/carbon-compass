@@ -38,17 +38,17 @@ export function Tracker() {
             Your Carbon Footprint Report
           </h1>
         </ParallaxLayer>
-        <ParallaxLayer offset={1} speed={1} style={{ backgroundColor: "" }}>
+        <ParallaxLayer offset={1} speed={0.5} style={{ backgroundColor: "" }}>
           <div className="flex flex-col justify-center align-middle">
-            <h1 className="left-align text-2xl font-bold pt-90  mb-5">
+            <h1 className="left-align text-4xl font-bold pt-90  mb-5">
               Your Carbon Heatmap
             </h1>
             <div className="grid grid-cols-2 px-10 pt-10">
               <Heatmap compositeData={data} />
-              <p>HIIIIIIIIIIIIIIIIIIIIIIIIIII</p>
-            </div>
-            <div className="left-align text-lg mt-12 ml-5">
-              <TopTrips />
+              {/* <p>HIIIIIIIIIIIIIIIIIIIIIIIIIII</p> */}
+              <div className="left-align text-lg mt-12 ml-10">
+                <TopTrips />
+              </div>
             </div>
           </div>
         </ParallaxLayer>
