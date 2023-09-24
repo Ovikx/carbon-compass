@@ -151,7 +151,7 @@ export function Tracker() {
                 })}
             </div>
           ) : (
-            <ClipLoader color={"#ffffff"} size={75} />
+            <ClipLoader color={"#000000"} size={75} className="my-20" />
           )}
         </ParallaxLayer>
       </Parallax>
