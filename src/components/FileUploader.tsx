@@ -19,12 +19,12 @@ export function FileUploader() {
     <div>
       <input type="file" id="locationData" onChange={handleFileChange} hidden />
       <label
-        className="flex transition-all flex-row w-32 mt-28  ml-98 text-lg rounded-lg p-1 text-white font-semibold hover:bg-green-700 bg-green-600 cursor-pointer"
+        className="flex transition-all flex-row w-32 mt-28  ml-98 text-lg rounded-lg p-1 text-white font-semibold hover:bg-green-500 bg-green-600 cursor-pointer hover:scale-105"
         htmlFor="locationData"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="rounded-lg hover:bg-green-700 fill-white"
+          className="rounded-lg fill-white"
           height="32"
           viewBox="0 -960 960 960"
           width="48"
