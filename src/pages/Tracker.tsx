@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState, useRef } from "react";
 import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
@@ -9,22 +9,20 @@ import { CompositeData } from "../model/CompositeData";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
+  const ref: any = useRef();
   const fileContext = useContext(FileContext);
-
-  useEffect(() => {
-    if (fileContext.file) {
-      Unzip.unzipLocationHistory(fileContext.file).then((res) => {
-        setData(res);
-      });
-    }
-  }, [fileContext]);
+  if (fileContext.file) {
+    Unzip.unzipLocationHistory(fileContext.file).then((res) => {
+      setData(res);
+    });
+  }
 
   return (
-    <div className="mt-40">
+    <div className="mt-24">
       <Parallax pages={4}>
         <ParallaxLayer
           speed={1}
-          factor={1}
+          //   factor={1}
           style={{
             backgroundImage: `url(${Report})`,
             backgroundRepeat: "no-repeat",
@@ -40,10 +38,22 @@ export function Tracker() {
             Your Carbon Footprint Report
           </h1>
         </ParallaxLayer>
-        <ParallaxLayer offset={1} speed={1}>
-          <div className="left-align">
-            <h2>Map</h2>
-            <Heatmap compositeData={data} />
+        <ParallaxLayer
+          offset={1}
+          speed={1}
+          style={{ backgroundColor: "" }}
+          onClick={() => ref.current.scrollTo?.(3)}
+        >
+          <div className="flex flex-row justify-center align-middle">
+            <div className="flex flex-col mr-5">
+              <h1 className="left-align text-2xl font-bold  pt-90  mb-5">
+                Your Carbon Heatmap
+              </h1>
+              <Heatmap compositeData={data} />
+            </div>
+            <div className="left-align text-lg mt-12 ml-5">
+              <p>Here's your carbon heat map!</p>
+            </div>
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
