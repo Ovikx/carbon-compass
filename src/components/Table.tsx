@@ -1,5 +1,5 @@
-import React from 'react'
-import { useTable, useExpanded } from 'react-table'
+import React from "react";
+import { useTable, useExpanded } from "react-table";
 
 function Table({ columns: userColumns, data }) {
   const {
@@ -14,31 +14,33 @@ function Table({ columns: userColumns, data }) {
       columns: userColumns,
       data,
     },
-    useExpanded // Use the useExpanded plugin hook
-  )
+    useExpanded, // Use the useExpanded plugin hook
+  );
 
   return (
     <>
       <table {...getTableProps()}>
         <thead>
-          {headerGroups.map(headerGroup => (
+          {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
               ))}
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            prepareRow(row)
+            prepareRow(row);
             return (
               <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                {row.cells.map((cell) => {
+                  return (
+                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  );
                 })}
               </tr>
-            )
+            );
           })}
         </tbody>
       </table>
@@ -48,18 +50,18 @@ function Table({ columns: userColumns, data }) {
         <code>{JSON.stringify({ expanded: expanded }, null, 2)}</code>
       </pre>
     </>
-  )
+  );
 }
 
-function TableCreate({data}) {
+function TableCreate({ data }) {
   const columns = React.useMemo(
     () => [
       {
         // Build our expander column
-        id: 'expander', // Make sure it has an ID
+        id: "expander", // Make sure it has an ID
         Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
           <span {...getToggleAllRowsExpandedProps()}>
-            {isAllRowsExpanded ? '👇' : '👉'}
+            {isAllRowsExpanded ? "👇" : "👉"}
           </span>
         ),
         Cell: ({ row }) =>
@@ -76,34 +78,32 @@ function TableCreate({data}) {
                 },
               })}
             >
-              {row.isExpanded ? '👇' : '👉'}
+              {row.isExpanded ? "👇" : "👉"}
             </span>
           ) : null,
       },
       {
-        Header: 'Year',
+        Header: "Year",
         columns: [
           {
-            Header: 'Month',
+            Header: "Month",
             columns: [
               {
-                Header: 'Month',
+                Header: "Month",
                 columns: [
                   {
-                    Header: 'Date',
-                    accessor: 'startTimestamp'
-                  }
-                ]
+                    Header: "Date",
+                    accessor: "startTimestamp",
+                  },
+                ],
               },
             ],
           },
         ],
       },
     ],
-    []
-  )
+    [],
+  );
 
-  return (
-    <Table columns={columns} data={data} />
-  )
+  return <Table columns={columns} data={data} />;
 }

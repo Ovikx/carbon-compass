@@ -8,6 +8,7 @@ import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import { flattenHierarchy } from "../utils/utils";
+import Modal from "react-modal";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
