@@ -22,7 +22,7 @@ export function Tracker() {
       <Parallax pages={4}>
         <ParallaxLayer
           speed={1}
-          //   factor={1}
+          factor={1}
           style={{
             backgroundImage: `url(${Report})`,
             backgroundRepeat: "no-repeat",
@@ -37,7 +37,7 @@ export function Tracker() {
           </h1>
         </ParallaxLayer>
         <ParallaxLayer
-          offset={1}
+          offset={1.0}
           speed={1}
           style={{ backgroundColor: "" }}
           onClick={() => ref.current.scrollTo?.(3)}
