@@ -31,7 +31,7 @@ export function HeatmapWrapper({ compositeData }: Props) {
   return (
     <div className="grid grid-cols-2 px-10 pt-10">
       <Heatmap compositeData={compositeData} selectedRoute={selectedRoute} />
-      <div className="left-align text-lg mt-12 ml-10">
+      <div className="left-align text-lg ml-10 justify-start">
         <TopTrips
           setSelectedRoute={setSelectedRoute}
           selectedRoute={selectedRoute}

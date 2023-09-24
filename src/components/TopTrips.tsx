@@ -14,8 +14,8 @@ export default function TopTrips({
 }: Props) {
   return (
     <>
-      <div className="grid grid-rows-3 px-10 gap-2">
-        <h2 className="font-bold text-3xl">Your 3 Biggest Trips</h2>
+      <h2 className="font-bold text-3xl pb-7 ">Your 3 Biggest Trips</h2>
+      <div className="flex flex-col px-10 gap-7">
         {routes.map((route) => (
           <MapRoute
             route={route}
