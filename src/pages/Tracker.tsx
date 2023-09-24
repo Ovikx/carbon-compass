@@ -8,6 +8,7 @@ import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import { flattenHierarchy } from "../utils/utils";
+import Modal from "react-modal";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -16,7 +17,6 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
-        console.log(flattenHierarchy(res.routes));
       });
     }
   }, [fileContext.file]);
@@ -45,13 +45,7 @@ export function Tracker() {
             <h1 className="left-align text-4xl font-bold pt-90  mb-5">
               Your Carbon Heatmap
             </h1>
-            <div className="grid grid-cols-2 px-10 pt-10">
-              <Heatmap compositeData={data} />
-              {/* <p>HIIIIIIIIIIIIIIIIIIIIIIIIIII</p> */}
-              <div className="left-align text-lg mt-12 ml-10">
-                <TopTrips />
-              </div>
-            </div>
+            <HeatmapWrapper compositeData={data} />
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
@@ -75,8 +69,45 @@ export function Tracker() {
         <RouteModal Props={(route, time, distance, carbonWaste, carbonSaved)} />
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align pointer-events-none">
-            <h2 className="left-align">Table</h2>
+            <h2 className="left-align text-4xl">Table</h2>
           </div>
+          {!!data ? (
+            <div className="flex flex-col text-xl gap-3">
+              {Array.from(data.routes.keys())
+                .sort()
+                .reverse()
+                .map((category) => {
+                  return (
+                    <Collapsible trigger={category}>
+                      {Array.from(data.routes.get(category)!.keys())
+                        .sort()
+                        .map((subcategory) => {
+                          return (
+                            <Collapsible trigger={subcategory}>
+                              {data.routes
+                                .get(category)!
+                                .get(subcategory)!
+                                .sort((a, b) => {
+                                  return b.startTimestamp - a.startTimestamp;
+                                })
+                                .map((route: Route) => {
+                                  return (
+                                    <div>
+                                      <h3>{route.startTimestamp}</h3>
+                                      <p>{route.endTimestamp}</p>
+                                    </div>
+                                  );
+                                })}
+                            </Collapsible>
+                          );
+                        })}
+                    </Collapsible>
+                  );
+                })}
+            </div>
+          ) : (
+            <></>
+          )}
         </ParallaxLayer>
       </Parallax>
     </div>

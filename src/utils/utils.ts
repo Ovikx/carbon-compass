@@ -3,25 +3,35 @@ import { Route } from "../model/Route";
 /**
  * Calculate the amount of carbon in kg wasted by taking this route
  */
-export function calculateCarbonWasted(route: Route): number {
+export function calculateCarbonSaved(route: Route): number {
   let carbonSaved = 0;
   if (route.activities.length > 0) {
     const mostProbableActivity = getMostProbableActivity(route);
-    if (mostProbableActivity === "IN_VEHICLE" || mostProbableActivity === "IN_PASSENGER_VEHICLE") {
+    if (
+      mostProbableActivity === "IN_VEHICLE" ||
+      mostProbableActivity === "IN_PASSENGER_VEHICLE"
+    ) {
       carbonSaved = 0;
-    } else if (mostProbableActivity === "WALKING" || mostProbableActivity === "RUNNING" || mostProbableActivity === "CYCLING") {
+    } else if (
+      mostProbableActivity === "WALKING" ||
+      mostProbableActivity === "RUNNING" ||
+      mostProbableActivity === "CYCLING"
+    ) {
       carbonSaved = getCarbonForCar(route.distance);
     } else if (mostProbableActivity == "IN_BUS") {
-      carbonSaved = getCarbonForCar(route.distance) * .25;
-    } else if (mostProbableActivity == "IN_TRAIN" || mostProbableActivity == "IN_SUBWAY") {
-      carbonSaved = getCarbonForCar(route.distance) * .5;
+      carbonSaved = getCarbonForCar(route.distance) * 0.25;
+    } else if (
+      mostProbableActivity == "IN_TRAIN" ||
+      mostProbableActivity == "IN_SUBWAY"
+    ) {
+      carbonSaved = getCarbonForCar(route.distance) * 0.5;
     }
   }
   return carbonSaved;
 }
 
 export function getCarbonForCar(distance: number): number {
-  return (distance/1000) * .192;
+  return (distance / 1000) * 0.192;
 }
 
 export function getMostProbableActivity(route: Route): string {
@@ -37,7 +47,7 @@ export function getMostProbableActivity(route: Route): string {
 }
 // material-ui icons
 export function getIconFromActivityName(activity: string) {
-  switch(activity) {
+  switch (activity) {
     case "IN_VEHICLE":
     case "IN_PASSENGER_VEHICLE":
       return "directions_car";
@@ -56,7 +66,7 @@ export function getIconFromActivityName(activity: string) {
 }
 
 export function getNameFromActivityName(activity: string) {
-  switch(activity) {
+  switch (activity) {
     case "IN_VEHICLE":
     case "IN_PASSENGER_VEHICLE":
       return "Car";
@@ -74,7 +84,9 @@ export function getNameFromActivityName(activity: string) {
   }
 }
 
-export function flattenHierarchy(data: Map<string, Map<string, Route[]>>): Route[] {
+export function flattenHierarchy(
+  data: Map<string, Map<string, Route[]>>,
+): Route[] {
   let flatData: Route[] = [];
   data.forEach((value, _) => {
     value.forEach((value, _) => {
@@ -84,6 +96,6 @@ export function flattenHierarchy(data: Map<string, Map<string, Route[]>>): Route
   flatData.sort((a, b) => {
     return b.startTimestamp - a.startTimestamp;
   });
-  
+
   return flatData;
 }
