@@ -48,8 +48,8 @@ export class Deserialize {
             endLocation.latitudeE7 / 10000000,
             endLocation.longitudeE7 / 10000000,
           ),
-          activitySegment.duration.startTimestampMs,
-          activitySegment.duration.endTimestampMs,
+          Date.parse(activitySegment.duration.startTimestamp),
+          Date.parse(activitySegment.duration.endTimestamp),
           activitySegment.distance,
           activitySegment.activities.map(
             (activity: any) =>
