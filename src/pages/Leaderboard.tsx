@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { User } from "../model/User";
 import ClipLoader from "react-spinners/ClipLoader";
 import { motion } from "framer-motion";
+import { getUsersFromLeaderboard } from "../firebase/controller";
 const transition = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 1 } },
@@ -14,7 +15,7 @@ export function Leaderboard() {
   const [users, updateUsers] = useState<User[] | null>();
   useEffect(() => {
     const getData = async () => {
-      const userList = [new User("Ovik", "", 150), new User("James", "", 10)]; //await getUsersFromLeaderboard("group 1");
+      const userList = await getUsersFromLeaderboard("group 1");
       updateUsers(userList);
     };
     getData();

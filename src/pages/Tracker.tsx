@@ -14,7 +14,6 @@ import { Route } from "../model/Route";
 import { addLeaderboardToUser, registerUser } from "../firebase/controller";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
-import { addLeaderboardToUser } from "../firebase/controller";
 import { motion } from "framer-motion";
 const transition = {
   initial: { opacity: 0 },
@@ -29,6 +28,7 @@ export function Tracker() {
   const [carbonSaved, setCarbonSaved] = useState(0);
   const [carbonWasted, setCarbonWasted] = useState(0);
   const [inputValue, setInputValue] = useState("");
+  const [leaderboardValue, setLeaderboardValue] = useState("");
   const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
 
@@ -357,14 +357,29 @@ export function Tracker() {
             id="outlined-basic"
             label="Enter Username"
             variant="outlined"
+            className="pr-10"
             value={inputValue}
-            onSubmit={() => {
+            onSubmit={async () => {
               setUsername(inputValue);
-              registerUser(username, carbonSaved);
-              addLeaderboardToUser(username, "group 1");
+              await registerUser(username, carbonSaved);
+              await addLeaderboardToUser(username, leaderboardValue);
             }}
             onChange={(e) => {
               setInputValue(e.target.value);
+            }}
+          />
+
+          <div className="flex flex-row justify-center align-middle py-4"></div>
+
+          <TextField
+            error={leaderboardValue.length === 0}
+            id="outlined-basic"
+            label="Leaderboard Invite"
+            variant="outlined"
+            value={leaderboardValue}
+            onSubmit={() => {}}
+            onChange={(e) => {
+              setLeaderboardValue(e.target.value);
             }}
           />
         </ParallaxLayer>
