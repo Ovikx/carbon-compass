@@ -8,6 +8,7 @@ import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import Modal from "react-modal";
+import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
@@ -150,7 +151,7 @@ export function Tracker() {
                 })}
             </div>
           ) : (
-            <></>
+            <ClipLoader color={"#ffffff"} size={75} />
           )}
         </ParallaxLayer>
       </Parallax>
