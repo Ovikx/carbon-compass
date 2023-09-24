@@ -1,6 +1,11 @@
+import { Route } from "../model/Route";
 import MapRoute from "./MapRoute";
 
-export default function TopTrips() {
+interface Props {
+  setSelectedRoute: (route: Route) => void;
+}
+
+export default function TopTrips({ setSelectedRoute }: Props) {
   return (
     <>
       <div className="grid grid-rows-3 px-10">
