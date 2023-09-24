@@ -6,8 +6,9 @@ import { default as Report } from "../assets/report.jpg";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
-import { Table } from "../components/Table";
+// import { Table } from "../components/Table";
 import TopTrips from "../components/TopTrips";
+import Modal from "react-modal";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -74,7 +75,7 @@ export function Tracker() {
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align pointer-events-none">
             <h2 className="left-align">Table</h2>
-            {!!data ? <Table data={data.routes}/> : <p>Loading...</p>}
+            {!!data ? <Table data={data.routes} /> : <p>Loading...</p>}
           </div>
         </ParallaxLayer>
       </Parallax>
