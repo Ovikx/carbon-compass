@@ -8,7 +8,8 @@ interface Props {
 export function RouteItem(props: Props) {
   return (
     <button className="flex flex-row gap-2">
-      <p>test</p>
+      <p>{props.startLat}</p>
+      <p>{props.endLat}</p>
     </button>
   );
 }
