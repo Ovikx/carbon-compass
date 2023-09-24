@@ -18,7 +18,6 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
-        console.log(flattenHierarchy(res.routes));
       });
     }
   }, [fileContext.file]);

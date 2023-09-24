@@ -1,26 +1,24 @@
 import { default as Location } from "../assets/location.png";
+import { Route } from "../model/Route";
 
 interface Props {
-  city1: string;
-  city2: string;
-  carbonUsage: number;
-  vehicle: string;
+  route: Route;
+  selected: boolean;
+  setSelectedRoute: (route: Route) => void;
 }
 
-type vehicle = "bus" | "car" | "train" | "plane" | "boat";
-
-export default function MapRoute({
-  city1,
-  city2,
-  carbonUsage,
-  vehicle,
-}: Props) {
+export default function MapRoute({ route, setSelectedRoute, selected }: Props) {
   return (
     // <div className="flex flex-row space-between">
-    <button className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 hover:bg-gray-100 hover:scale-105 transition-all rounded-2xl">
+    <button
+      className={`grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 hover:bg-gray-200  transition-all rounded-2xl ${
+        selected ? "bg-gray-200 scale-105" : ""
+      }`}
+      onClick={() => setSelectedRoute(route)}
+    >
       <div className="flex flex-col ml-auto justify-center align-middle">
         <img src={Location} alt="location" className="w-12 ml-auto" />
-        <p className="text-right">{city1}</p>
+        <p className="text-right">Start</p>
       </div>
       {/* <img src={Line} alt="line" /> */}
       <div className="flex justify-center align-middle">
@@ -28,11 +26,11 @@ export default function MapRoute({
       </div>
       <div className="flex flex-col justify-center align-middle">
         <img src={Location} alt="location" className="w-12" />
-        <p className="text-left">{city2}</p>
+        <p className="text-left">End</p>
       </div>
-      <p className=" flex lg mr-auto my-auto font-extrabold text-4xl ">
-        {carbonUsage}
-        <p className="text-2xl my-auto ml-2">kg</p>
+      <p className=" flex lg  my-auto font-extrabold text-4xl ">
+        Carbon usage
+        <p className="text-2xl my-auto ml-2 mr-10">kg</p>
       </p>
     </button>
   );
