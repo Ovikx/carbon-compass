@@ -42,10 +42,10 @@ export function Leaderboard() {
         variants={transition}
       >
         <div>
-          <h1 className="text-4xl text-center text-slate-700 dark:text-slate-400 font-bold mt-10 mb-3">
+          <h1 className="text-4xl text-center text-slate-700 font-bold mt-10 mb-3">
             Leaderboard
           </h1>
-          <h2 className="text-2xl text-center text-slate-700 dark:text-slate-400 font-bold mb-5">
+          <h2 className="text-2xl text-center text-slate-700 font-bold mb-5">
             Group 1
           </h2>
         </div>
@@ -61,7 +61,7 @@ export function Leaderboard() {
             {users.map((user: User, index: number) => {
               return (
                 <tr
-                  className="border-b border-slate-400 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+                  className="border-b border-slate-400 p-4 pl-8 text-slate-700"
                   key={user.id}
                 >
                   <td className="px-4 py-2">{index + 1}</td>

@@ -1,5 +1,5 @@
 import { User } from "../model/User";
-import { getLeaderboardData } from "./leaderboard";
+import { getLeaderboardData, saveLeader } from "./leaderboard";
 import { getUser, saveUser } from "./user";
 
 export async function getUsersFromLeaderboard(id: string): Promise<User[]> {
@@ -42,5 +42,14 @@ export async function addLeaderboardToUser(name: string, leaderboard: string) {
   if (user) {
     user.leaderboard = leaderboard;
     await saveUser(user);
+  } else {
+    return;
   }
+
+  let lb = await getLeaderboardData(leaderboard);
+  if (!lb) {
+    return;
+  }
+  lb.users.push(user.id);
+  await saveLeader(lb);
 }

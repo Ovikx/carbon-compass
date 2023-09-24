@@ -1,10 +1,17 @@
 import { FileUploader } from "../components/FileUploader";
 import { default as Trees } from "../assets/trees.svg";
+import { motion } from "framer-motion";
+
+const transition = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 1 } },
+  exit: { opacity: 0, transition: { duration: 1 } },
+};
 
 export function Home() {
   return (
     <>
-      <div
+      <motion.div
         style={{
           backgroundImage: `url(${Trees})`,
           backgroundRepeat: "no-repeat",
@@ -16,6 +23,10 @@ export function Home() {
           top: 0,
           left: 0,
         }}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        variants={transition}
       >
         <div className="mt-40">
           <div className="text-gray-500 pt-10 ">
@@ -30,8 +41,7 @@ export function Home() {
           </div>
           <FileUploader />
         </div>
-      </div>
-
+      </motion.div>
     </>
   );
 }

@@ -7,11 +7,13 @@ import { default as Exit } from "../assets/Close.png";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
+import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
 import { flattenHierarchy } from "../utils/utils";
 import { Dialog } from "@headlessui/react";
+import TextField from "@mui/material/TextField";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -242,9 +244,10 @@ export function Tracker() {
                 })}
             </div>
           ) : (
-            <></>
+            <ClipLoader color={"#000000"} size={75} className="my-20" />
           )}
         </ParallaxLayer>
+        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
       </Parallax>
     </div>
   );
