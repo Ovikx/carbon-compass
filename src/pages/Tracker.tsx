@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
 import { default as Report } from "../assets/report.jpg";
+import { default as ReportGif } from "../assets/report.gif";
 import { default as Exit } from "../assets/Close.png";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
@@ -10,10 +11,17 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
+import { addLeaderboardToUser, registerUser } from "../firebase/controller";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
-import { addLeaderboardToUser } from "../firebase/controller";
 import { motion } from "framer-motion";
+import {
+  calculateCarbonSaved,
+  flattenHierarchy,
+  getCarbonForCar,
+  getNameFromActivityName,
+} from "../utils/utils";
+import { Button } from "@mui/material";
 const transition = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 1 } },
@@ -24,7 +32,11 @@ export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState("");
+  const [carbonSaved, setCarbonSaved] = useState(0);
+  const [carbonWasted, setCarbonWasted] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [leaderboardValue, setLeaderboardValue] = useState("");
   const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
 
@@ -32,19 +44,22 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
+        getCarbonSum(res.routes);
       });
     }
   }, [fileContext.file]);
 
-  type StringDict<T> = {
-    [key: string]: T;
-  };
-  const dictionary: StringDict<string> = {
-    IN_PASSENGER_VEHICLE: "Vehicle",
-  };
-
-  const convertActivity = (activity: string) => {
-    return dictionary[activity];
+  const getCarbonSum = (data: Map<string, Map<string, Route[]>>) => {
+    let carbonSum = 0;
+    let carbonWaste = 0;
+    const flatten = flattenHierarchy(data);
+    flatten.forEach((route) => {
+      carbonSum += calculateCarbonSaved(route);
+      carbonWaste +=
+        getCarbonForCar(route.distance) - calculateCarbonSaved(route);
+    });
+    setCarbonSaved(carbonSum);
+    setCarbonWasted(carbonWaste);
   };
 
   return (
@@ -152,9 +167,14 @@ export function Tracker() {
                       </div>
                     </p>
                     <p>
+                      Carbon Saved:{" "}
+                      {route ? calculateCarbonSaved(route) : "N/A"}
+                    </p>
+
+                    <p>
                       Activity:{" "}
                       {route
-                        ? convertActivity(
+                        ? getNameFromActivityName(
                             route?.activities.reduce(
                               (maxObject, currentObject) => {
                                 return currentObject.probability >
@@ -304,28 +324,73 @@ export function Tracker() {
         <ParallaxLayer
           offset={4}
           speed={0.5}
-          className="text-3xl font-bold mb-5"
+          className="text-3xl font-bold mb-5 flex"
+          style={{
+            backgroundImage: `url(${ReportGif})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
-          Thanks for taking part and being aware of your Carbon Footprint!
+          <div className="m-auto text-emerald-600">
+            Thanks for taking part and being aware of your Carbon Footprint!
+          </div>
         </ParallaxLayer>
         <ParallaxLayer offset={5} speed={0.5}>
           <p className="text-3xl font-bold mb-10">
             Add a username to compare your Carbon Footprint with others!
           </p>
-          <TextField
+          {submitted ? (
+            <p className="text-lg">You have been added!</p>
+          ) : (
+            <div className="flex flex-row justify-center align-items h-10 ">
+              <TextField
             error={inputValue.length === 0}
             id="outlined-basic"
             label="Enter Username"
             variant="outlined"
+            className="pr-10"
             value={inputValue}
-            onSubmit={() => {
+            onSubmit={async () => {
               setUsername(inputValue);
-              // addLeaderboardToUser(username, leaderboard);
+              await registerUser(username, carbonSaved);
+              await addLeaderboardToUser(username, leaderboardValue);
             }}
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
           />
+
+          <div className="flex flex-row justify-center align-middle py-4"></div>
+
+          <TextField
+            error={leaderboardValue.length === 0}
+            id="outlined-basic"
+            label="Leaderboard Invite"
+            variant="outlined"
+            value={leaderboardValue}
+            onSubmit={() => {}}
+            onChange={(e) => {
+              setLeaderboardValue(e.target.value);
+            }}
+          />
+              <div className="my-2 ml-5">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    console.log(inputValue);
+                    setUsername(inputValue);
+                    registerUser(username, carbonSaved);
+                    addLeaderboardToUser(username, "group 1");
+                    console.log("submitted");
+                    setSubmitted(true);
+                    console.log(submitted);
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          )}
         </ParallaxLayer>
       </Parallax>
     </motion.div>
