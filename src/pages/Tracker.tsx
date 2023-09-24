@@ -32,9 +32,7 @@ export function Tracker() {
           <div className="flex flex-row justify-center align-middle">
             <div className="flex flex-col justify-center align-middle"></div>
           </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={0.4} speed={0.05}>
-          <h1 className="left-align text-5xl font-bold text-white pt-90">
+          <h1 className="left-align text-5xl font-bold text-white pt-90 mt-60">
             Your Carbon Footprint Report
           </h1>
         </ParallaxLayer>
@@ -46,14 +44,14 @@ export function Tracker() {
         >
           <div className="flex flex-row justify-center align-middle">
             <div className="flex flex-col mr-5">
-              <h1 className="left-align text-2xl font-bold  pt-90  mb-5">
+              <h1 className="left-align text-2xl font-bold pt-90  mb-5">
                 Your Carbon Heatmap
               </h1>
               <Heatmap compositeData={data} />
             </div>
-            <div className="left-align text-lg mt-12 ml-5">
+            {/* <div className="left-align text-lg mt-12 ml-5">
               <p>Here's your carbon heat map!</p>
-            </div>
+            </div> */}
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
