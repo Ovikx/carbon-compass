@@ -10,6 +10,7 @@ import TopTrips from "../components/TopTrips";
 import Modal from "react-modal";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
+import { Route } from "../model/Route";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -72,7 +73,7 @@ export function Tracker() {
             <h2 className="left-align text-4xl">Table</h2>
           </div>
           {!!data ? (
-            <div className="flex flex-col text-xl gap-3">
+            <div className="flex flex-col text-xl gap-3 border border-black mx-80">
               {Array.from(data.routes.keys())
                 .sort()
                 .reverse()
@@ -80,7 +81,26 @@ export function Tracker() {
                   return (
                     <Collapsible trigger={category}>
                       {Array.from(data.routes.get(category)!.keys())
-                        .sort()
+                        // sort by month
+                        .sort((a, b) => {
+                          let months = [
+                            "JANUARY",
+                            "FEBRUARY",
+                            "MARCH",
+                            "APRIL",
+                            "MAY",
+                            "JUNE",
+                            "JULY",
+                            "AUGUST",
+                            "SEPTEMBER",
+                            "OCTOBER",
+                            "NOVEMBER",
+                            "DECEMBER",
+                          ];
+                          console.log(b);
+                          console.log(months.indexOf(b));
+                          return months.indexOf(a) - months.indexOf(a);
+                        })
                         .map((subcategory) => {
                           return (
                             <Collapsible trigger={subcategory}>
