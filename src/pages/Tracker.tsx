@@ -11,15 +11,23 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
-import { flattenHierarchy } from "../utils/utils";
+import {
+  calculateCarbonSaved,
+  flattenHierarchy,
+  getCarbonForCar,
+  getIconFromActivityName,
+  getMostProbableActivity,
+} from "../utils/utils";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
-import { addLeaderboardToUser } from "../firebase/controller";
+import { addLeaderboardToUser, registerUser } from "../firebase/controller";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState("");
+  const [carbonSaved, setCarbonSaved] = useState(0);
+  const [carbonWasted, setCarbonWasted] = useState(0);
   const [inputValue, setInputValue] = useState("");
   const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
@@ -28,6 +36,7 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
+        getCarbonSum(data);
       });
     }
   }, [fileContext.file]);
@@ -37,6 +46,29 @@ export function Tracker() {
   };
   const dictionary: StringDict<string> = {
     IN_PASSENGER_VEHICLE: "Vehicle",
+  };
+
+  const getCarbonSum = (data: any) => {
+    Array.from(data.routes.keys()).forEach((category) => {
+      {
+        Array.from(data.routes.get(category)!.keys()).forEach(
+          (subcategory: any) => {
+            <div className="ml-20">
+              {data.routes
+                .get(category)!
+                .get(subcategory)!
+                .map((route: Route) => {
+                  setCarbonSaved(carbonSaved + calculateCarbonSaved(route));
+                  console.log(getCarbonForCar(route.distance));
+                  setCarbonWasted(
+                    carbonWasted + getCarbonForCar(route.distance),
+                  );
+                })}
+            </div>;
+          },
+        );
+      }
+    });
   };
 
   const convertActivity = (activity: string) => {
@@ -141,6 +173,11 @@ export function Tracker() {
                         </p>
                       </div>
                     </p>
+                    <p>
+                      Carbon Saved:{" "}
+                      {route ? calculateCarbonSaved(route) : "N/A"}
+                    </p>
+
                     <p>
                       Activity:{" "}
                       {route
@@ -309,7 +346,8 @@ export function Tracker() {
             value={inputValue}
             onSubmit={() => {
               setUsername(inputValue);
-              // addLeaderboardToUser(username, leaderboard);
+              registerUser(username, carbonSaved);
+              addLeaderboardToUser(username, "group 1");
             }}
             onChange={(e) => {
               setInputValue(e.target.value);

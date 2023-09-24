@@ -1,4 +1,11 @@
 import { Route } from "../model/Route";
+import {
+  DirectionsCarOutlined,
+  DirectionsWalkOutlined,
+  DirectionsBusOutlined,
+  TrainOutlined,
+  QuestionMarkOutlined,
+} from "@mui/icons-material";
 
 /**
  * Calculate the amount of carbon in kg wasted by taking this route
@@ -50,18 +57,18 @@ export function getIconFromActivityName(activity: string) {
   switch (activity) {
     case "IN_VEHICLE":
     case "IN_PASSENGER_VEHICLE":
-      return "directions_car";
+      return DirectionsCarOutlined;
     case "WALKING":
     case "RUNNING":
     case "CYCLING":
-      return "directions_walk";
+      return DirectionsWalkOutlined;
     case "IN_BUS":
-      return "directions_bus";
+      return DirectionsBusOutlined;
     case "IN_TRAIN":
     case "IN_SUBWAY":
-      return "train";
+      return TrainOutlined;
     default:
-      return "question_mark";
+      return QuestionMarkOutlined;
   }
 }
 
