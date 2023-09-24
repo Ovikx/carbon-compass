@@ -75,7 +75,7 @@ export function Heatmap(props: Props) {
         center: heatmap.positions[0],
         zoom: 11,
       }
-    : { center: { lat: 0, lng: 0 }, zoom: 11 };
+    : { center: { lat: 29.714233, lng: -95.404075 }, zoom: 11 };
 
   return (
     // Important! Always set the container height explicitly
