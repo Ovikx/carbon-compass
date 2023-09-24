@@ -34,7 +34,7 @@ export function Home() {
               <p className="text-4xl text-black font-medium text-left">
                 Track your Carbon Footprint
               </p>
-              <p className="text-4xl  c font-bold text-left mt-2">Smarter</p>
+              <p className="text-4xl text-green-500 font-bold text-left mt-2">Smarter</p>
             </div>
           </div>
           <FileUploader />
