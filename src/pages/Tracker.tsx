@@ -15,6 +15,13 @@ import { addLeaderboardToUser, registerUser } from "../firebase/controller";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
 import { motion } from "framer-motion";
+import {
+  calculateCarbonSaved,
+  flattenHierarchy,
+  getCarbonForCar,
+  getNameFromActivityName,
+} from "../utils/utils";
+import { Button } from "@mui/material";
 const transition = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 1 } },
@@ -27,6 +34,7 @@ export function Tracker() {
   const [username, setUsername] = useState("");
   const [carbonSaved, setCarbonSaved] = useState(0);
   const [carbonWasted, setCarbonWasted] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [leaderboardValue, setLeaderboardValue] = useState("");
   const [route, setRoute] = useState<Route | null>(null);
@@ -36,43 +44,22 @@ export function Tracker() {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
         setData(res);
-        getCarbonSum(data);
+        getCarbonSum(res.routes);
       });
     }
   }, [fileContext.file]);
 
-  type StringDict<T> = {
-    [key: string]: T;
-  };
-  const dictionary: StringDict<string> = {
-    IN_PASSENGER_VEHICLE: "Vehicle",
-  };
-
-  const getCarbonSum = (data: any) => {
-    Array.from(data.routes.keys()).forEach((category) => {
-      {
-        Array.from(data.routes.get(category)!.keys()).forEach(
-          (subcategory: any) => {
-            <div className="ml-20">
-              {data.routes
-                .get(category)!
-                .get(subcategory)!
-                .map((route: Route) => {
-                  setCarbonSaved(carbonSaved + calculateCarbonSaved(route));
-                  console.log(getCarbonForCar(route.distance));
-                  setCarbonWasted(
-                    carbonWasted + getCarbonForCar(route.distance),
-                  );
-                })}
-            </div>;
-          },
-        );
-      }
+  const getCarbonSum = (data: Map<string, Map<string, Route[]>>) => {
+    let carbonSum = 0;
+    let carbonWaste = 0;
+    const flatten = flattenHierarchy(data);
+    flatten.forEach((route) => {
+      carbonSum += calculateCarbonSaved(route);
+      carbonWaste +=
+        getCarbonForCar(route.distance) - calculateCarbonSaved(route);
     });
-  };
-
-  const convertActivity = (activity: string) => {
-    return dictionary[activity];
+    setCarbonSaved(carbonSum);
+    setCarbonWasted(carbonWaste);
   };
 
   return (
@@ -187,7 +174,7 @@ export function Tracker() {
                     <p>
                       Activity:{" "}
                       {route
-                        ? convertActivity(
+                        ? getNameFromActivityName(
                             route?.activities.reduce(
                               (maxObject, currentObject) => {
                                 return currentObject.probability >
@@ -352,7 +339,11 @@ export function Tracker() {
           <p className="text-3xl font-bold mb-10">
             Add a username to compare your Carbon Footprint with others!
           </p>
-          <TextField
+          {submitted ? (
+            <p className="text-lg">You have been added!</p>
+          ) : (
+            <div className="flex flex-row justify-center align-items h-10 ">
+              <TextField
             error={inputValue.length === 0}
             id="outlined-basic"
             label="Enter Username"
@@ -382,6 +373,24 @@ export function Tracker() {
               setLeaderboardValue(e.target.value);
             }}
           />
+              <div className="my-2 ml-5">
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    console.log(inputValue);
+                    setUsername(inputValue);
+                    registerUser(username, carbonSaved);
+                    addLeaderboardToUser(username, "group 1");
+                    console.log("submitted");
+                    setSubmitted(true);
+                    console.log(submitted);
+                  }}
+                >
+                  Submit
+                </Button>
+              </div>
+            </div>
+          )}
         </ParallaxLayer>
       </Parallax>
     </motion.div>
