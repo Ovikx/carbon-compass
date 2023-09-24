@@ -22,6 +22,8 @@ import {
   getNameFromActivityName,
 } from "../utils/utils";
 import { Button } from "@mui/material";
+import { BaseMap } from "../components/BaseMap";
+
 const transition = {
   initial: { opacity: 0 },
   animate: { opacity: 1, transition: { duration: 1 } },
@@ -156,6 +158,7 @@ export function Tracker() {
                     </div>
                   </div>
                   <Dialog.Description>
+                    <BaseMap selectedRoute={route} />
                     <p className="flex flex-row align-middle mt-3">
                       <p className="mt-1">Carbon Footprint: </p>
                       <div className="ml-2">
@@ -225,9 +228,9 @@ export function Tracker() {
               </div>
             </Dialog>
           </div>
-          {!!data ? (
-            <div className="flex flex-col text-left text-xl gap-3 border border-emerald mx-80 pl-6 pt-5 pb-5 rounded-lg shadow-sm">
-              <div className="flex flex-row pt-2 pb-2 ">
+          {data ? (
+            <div className="flex flex-col text-left text-xl gap-3 border border-emerald mx-80 pl-6 pt-5 pb-5 rounded-lg shadow-md">
+              <div className="flex flex-row pt-2 pb-2 font-bold">
                 <h2>
                   Year &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -281,7 +284,7 @@ export function Tracker() {
                                   .map((route: Route) => {
                                     return (
                                       <div
-                                        className="ml-28"
+                                        className="ml-28 hover:bg-gray-100"
                                         onClick={() => {
                                           setRoute(route);
                                           setIsOpen(true);

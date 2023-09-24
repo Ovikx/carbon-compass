@@ -52,18 +52,18 @@ export default function MapRoute({ route, setSelectedRoute, selected }: Props) {
       }`}
       onClick={() => setSelectedRoute(route)}
     >
-      <div className="flex flex-col ml-auto justify-center align-middle">
+      <div className="flex flex-col ml-auto font-medium justify-center align-middle">
         <img src={Location} alt="location" className="w-12 ml-auto" />
         <p className="text-right">{startCity}</p>
       </div>
       <div className="flex justify-center align-middle">
         <hr className="w-48 h-1 mx-auto my-4 bg-gray-100 border-0 rounded md:my-10 dark:bg-gray-700"></hr>
       </div>
-      <div className="flex flex-col justify-center align-middle">
+      <div className="flex flex-col font-medium justify-center align-middle">
         <img src={Location} alt="location" className="w-12" />
         <p className="text-left">{endCity}</p>
       </div>
-      <div className="flex flex-row font-extrabold ">
+      <div className="flex flex-row font-extrabold my-auto">
         <p className=" flex lg  my-auto text-4xl ">
           {getCarbonForCar(route.distance).toFixed(2)}
         </p>
