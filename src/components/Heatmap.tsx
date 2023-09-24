@@ -23,13 +23,14 @@ interface Props {
   selectedRoute: Route | null;
 }
 
+export const mapApiKey = "AIzaSyBL1xP5iEVz7h8yYSDTrNhSB85e2AWvx8k";
+
 function parseData(compositeData: CompositeData): HeatmapData {
   const resData: HeatmapData = {
     positions: [],
     options: { radius: 20, opacity: 1 },
   };
 
-  console.log(compositeData);
   for (const loc of compositeData.locations) {
     resData.positions.push({
       lat: loc.latitude,
@@ -120,7 +121,7 @@ export function Heatmap(props: Props) {
     <div className="h-110 w-[700px]">
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: "AIzaSyBL1xP5iEVz7h8yYSDTrNhSB85e2AWvx8k",
+          key: mapApiKey,
           libraries: ["visualization"],
         }}
         defaultCenter={defaultProps.center}
