@@ -3,5 +3,5 @@ import { Location } from "./Location";
 
 export interface CompositeData {
   locations: Location[];
-  routes: Route[];
+  routes: Map<string, Map<string, Route[]>>;
 }

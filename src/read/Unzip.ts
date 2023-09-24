@@ -4,14 +4,13 @@ import * as zip from "@zip.js/zip.js";
 import { Deserialize } from "./Deserialize.ts";
 import { Location } from "../model/Location.ts";
 import { Route } from "../model/Route.ts";
-import { flattenHierarchy } from "../utils/utils.ts";
 
 export class Unzip {
   public static async unzipLocationHistory(
     blob: Blob,
   ): Promise<{
     locations: Location[];
-    routes: Route[];
+    routes: Map<string, Map<string, Route[]>>;
   }> {
     // unzip using zip.js using filereader
     const reader = new zip.ZipReader(new zip.BlobReader(blob));
@@ -59,7 +58,7 @@ export class Unzip {
 
     return {
       locations: locations,
-      routes: flattenHierarchy(routes),
+      routes: routes,
     };
   }
 }

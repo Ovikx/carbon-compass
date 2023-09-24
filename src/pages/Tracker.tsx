@@ -7,12 +7,19 @@ import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
-import { flattenHierarchy } from "../utils/utils";
 import Modal from "react-modal";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
+import Collapsible from "react-collapsible";
+import { Route } from "../model/Route";
+import { flattenHierarchy } from "../utils/utils";
+import RouteModal from "../components/RouteModal";
+import { Dialog } from "@headlessui/react";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
   useEffect(() => {
     if (fileContext.file) {
@@ -68,9 +75,83 @@ export function Tracker() {
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={3} speed={0.25}>
-          <div className="left-align pointer-events-none">
+          <div className="left-align ">
             <h2 className="left-align">Table</h2>
+            <button onClick={() => setIsOpen(true)}>view trip</button>
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+              <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                <Dialog.Panel className="mx-auto w-1/2 h-1/2 rounded bg-white justify-center align-middle">
+                  <Dialog.Title>
+                    Trip from {route?.startTimestamp} to {route?.endTime} of{" "}
+                    {route?.distance} km wasting {route?.distance * 5} kg.
+                  </Dialog.Title>
+                  <Dialog.Description>
+                    This will permanently deactivate your account
+                  </Dialog.Description>
+                  {/* <p>This amount of Carbon could have been saved: {carbonSaved}</p> */}
+                  <button onClick={() => setIsOpen(false)}>Deactivate</button>
+                  <button onClick={() => setIsOpen(false)}>Cancel</button>
+                </Dialog.Panel>
+              </div>
+            </Dialog>
           </div>
+          {!!data ? (
+            <div className="flex flex-col text-xl gap-3 border border-black mx-80">
+              {Array.from(data.routes.keys())
+                .sort()
+                .reverse()
+                .map((category) => {
+                  return (
+                    <Collapsible trigger={category}>
+                      {Array.from(data.routes.get(category)!.keys())
+                        // sort by month
+                        .sort((a, b) => {
+                          let months = [
+                            "JANUARY",
+                            "FEBRUARY",
+                            "MARCH",
+                            "APRIL",
+                            "MAY",
+                            "JUNE",
+                            "JULY",
+                            "AUGUST",
+                            "SEPTEMBER",
+                            "OCTOBER",
+                            "NOVEMBER",
+                            "DECEMBER",
+                          ];
+                          console.log(b);
+                          console.log(months.indexOf(b));
+                          return months.indexOf(a) - months.indexOf(a);
+                        })
+                        .map((subcategory) => {
+                          return (
+                            <Collapsible trigger={subcategory}>
+                              {data.routes
+                                .get(category)!
+                                .get(subcategory)!
+                                .sort((a, b) => {
+                                  return b.startTimestamp - a.startTimestamp;
+                                })
+                                .map((route: Route) => {
+                                  return (
+                                    <div>
+                                      <h3>{route.startTimestamp}</h3>
+                                      <p>{route.endTimestamp}</p>
+                                    </div>
+                                  );
+                                })}
+                            </Collapsible>
+                          );
+                        })}
+                    </Collapsible>
+                  );
+                })}
+            </div>
+          ) : (
+            <></>
+          )}
         </ParallaxLayer>
       </Parallax>
     </div>
