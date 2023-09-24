@@ -65,18 +65,7 @@ export function Heatmap(props: Props) {
   if (!props.compositeData)
     return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
 
-  // Continue with heatmap data parsing
-  // const heatmap: Heatmap = props.compositeData
-  //   ? parseData(props.compositeData)
-  //   : { positions: [], options: {} };
-
-  // const defaultProps = props.compositeData
-  //   ? {
-  //       center: heatmap.positions[0],
-  //       zoom: 11,
-  //     }
-  //   : { center: { lat: 29.714233, lng: -95.404075 }, zoom: 11 };
-
+  // Continue with parsing data
   const heatmap = parseData(props.compositeData);
   const defaultProps = { center: heatmap.positions[0], zoom: 11 };
 
