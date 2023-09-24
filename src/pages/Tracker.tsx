@@ -146,7 +146,7 @@ export function Tracker() {
                       <p className="mt-1">Carbon Footprint: </p>
                       <div className="ml-2">
                         <p className="font-extrabold text-2xl  flex flex-row">
-                          {route ? route.distance * 5 : "N/A"}
+                          {route ? route.distance * 0.5 : "N/A"}
                           <p className=" my-auto ml-2 font-medium">kg</p>
                         </p>
                       </div>
