@@ -60,7 +60,10 @@ export function Leaderboard() {
           <tbody>
             {users.map((user: User, index: number) => {
               return (
-                <tr className="border-b border-slate-400 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">
+                <tr
+                  className="border-b border-slate-400 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400"
+                  key={user.id}
+                >
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2">{user.id}</td>
                   <td className="bpx-4 py-2">{user.carbonSaved}</td>
