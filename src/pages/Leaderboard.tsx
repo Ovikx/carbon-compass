@@ -61,7 +61,7 @@ export function Leaderboard() {
             {users.map((user: User, index: number) => {
               return (
                 <tr
-                  className="border-b border-slate-400 dark:border-slate-700 p-4 pl-8 text-slate-500"
+                  className="border-b border-slate-400 p-4 pl-8 text-slate-700"
                   key={user.id}
                 >
                   <td className="px-4 py-2">{index + 1}</td>
