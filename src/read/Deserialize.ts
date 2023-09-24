@@ -1,10 +1,10 @@
 // read in Google Location Takeout data and deserialize it
 // into a list of Location objects
 
-import { Location } from '../model/Location.ts';
-import { Route } from '../model/Route.ts';
-import { Activity } from '../model/Activity.ts';
-import { getMostProbableActivity } from '../utils/utils.ts';
+import { Location } from "../model/Location.ts";
+import { Route } from "../model/Route.ts";
+import { Activity } from "../model/Activity.ts";
+import { getMostProbableActivity } from "../utils/utils.ts";
 
 export class Deserialize {
   public static deserializeLocationRecords(rawData: string): Location[] {
@@ -34,34 +34,47 @@ export class Deserialize {
     const routeArr = [];
 
     for (const timeline of timelineObjects) {
-        if ('activitySegment' in timeline) {
-            const activitySegment = timeline.activitySegment;
-            const startLocation = activitySegment.startLocation;
-            const endLocation = activitySegment.endLocation;
-            
-            const route = new Route(
-                new Location(startLocation.latitudeE7 / 10000000, startLocation.longitudeE7 / 10000000),
-                new Location(endLocation.latitudeE7 / 10000000, endLocation.longitudeE7 / 10000000),
-                activitySegment.duration.startTimestampMs,
-                activitySegment.duration.endTimestampMs,
-                activitySegment.distance,
-                activitySegment.activities.map(
-                    (activity: any) => new Activity(activity.activityType, activity.probability),
-                ),
-            );
-            const mostProbableActivity = getMostProbableActivity(route);
-            // filter out routes that are not in a vehicle or walking/running/cycling
-            if ((mostProbableActivity ! == "IN_VEHICLE" || mostProbableActivity ! == "IN_PASSENGER_VEHICLE") || 
-                (mostProbableActivity ! == "WALKING" || mostProbableActivity ! == "RUNNING" || mostProbableActivity ! == "CYCLING") ||
-                (mostProbableActivity ! == "IN_BUS" || mostProbableActivity ! == "IN_TRAIN" || mostProbableActivity ! == "IN_SUBWAY")) {
-                continue;
-            }
+      if ("activitySegment" in timeline) {
+        const activitySegment = timeline.activitySegment;
+        const startLocation = activitySegment.startLocation;
+        const endLocation = activitySegment.endLocation;
 
-            routeArr.push(route);
+        const route = new Route(
+          new Location(
+            startLocation.latitudeE7 / 10000000,
+            startLocation.longitudeE7 / 10000000,
+          ),
+          new Location(
+            endLocation.latitudeE7 / 10000000,
+            endLocation.longitudeE7 / 10000000,
+          ),
+          activitySegment.duration.startTimestampMs,
+          activitySegment.duration.endTimestampMs,
+          activitySegment.distance,
+          activitySegment.activities.map(
+            (activity: any) =>
+              new Activity(activity.activityType, activity.probability),
+          ),
+        );
+        const mostProbableActivity = getMostProbableActivity(route);
+        // filter out routes that are not in a vehicle or walking/running/cycling
+        if (
+          mostProbableActivity !== "IN_VEHICLE" &&
+          mostProbableActivity !== "IN_PASSENGER_VEHICLE" &&
+          mostProbableActivity !== "WALKING" &&
+          mostProbableActivity !== "RUNNING" &&
+          mostProbableActivity !== "CYCLING" &&
+          mostProbableActivity !== "IN_BUS" &&
+          mostProbableActivity !== "IN_TRAIN" &&
+          mostProbableActivity !== "IN_SUBWAY"
+        ) {
+          continue;
+        }
+
+        routeArr.push(route);
       }
     }
 
     return routeArr;
   }
 }
-
