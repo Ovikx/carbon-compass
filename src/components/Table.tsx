@@ -1,60 +1,109 @@
-import {
-  useReactTable,
-  ExpandedState,
-  getCoreRowModel,
-} from "@tanstack/react-table";
-import { useState } from "react";
-import { Route } from "../model/Route.ts";
+import React from 'react'
+import { useTable, useExpanded } from 'react-table'
 
-export function Table({ data }: { data: Map<string, Map<string, Route[]>> }) {
-  const [expanded, setExpanded] = useState<ExpandedState>({});
-  let columns = Array.from(data.keys()).map((key) => {
-    return {
-      header: key,
-      columns:
-        (data.get(key) &&
-          Array.from(data.get(key)!.keys()).map((key2) => {
-            return {
-              header: key2,
-              columns:
-                (data.get(key2) &&
-                  Array.from(data.get(key2)!.keys()).map((key3) => {
-                    return {
-                      header: key3,
-                    };
-                  })) ||
-                [],
-            };
-          })) ||
-        [],
-    };
-  });
-
-  // use react tan table to display multilevel expanded table
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      expanded,
+function Table({ columns: userColumns, data }) {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    rows,
+    prepareRow,
+    state: { expanded },
+  } = useTable(
+    {
+      columns: userColumns,
+      data,
     },
-    onExpandedChange: setExpanded,
-    getCoreRowModel: getCoreRowModel(),
-    debugTable: true,
-  });
-  console.error(table);
+    useExpanded // Use the useExpanded plugin hook
+  )
+
   return (
-    <table>
-      <tbody>
-        {table.getRowModel().rows.map((row) => {
-          return (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => {
-                return <td key={cell.id}>{"text"}</td>;
-              })}
+    <>
+      <table {...getTableProps()}>
+        <thead>
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map(column => (
+                <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row)
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map(cell => {
+                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                })}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <br />
+      <div>Showing the first 20 results of {rows.length} rows</div>
+      <pre>
+        <code>{JSON.stringify({ expanded: expanded }, null, 2)}</code>
+      </pre>
+    </>
+  )
+}
+
+function TableCreate({data}) {
+  const columns = React.useMemo(
+    () => [
+      {
+        // Build our expander column
+        id: 'expander', // Make sure it has an ID
+        Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }) => (
+          <span {...getToggleAllRowsExpandedProps()}>
+            {isAllRowsExpanded ? '👇' : '👉'}
+          </span>
+        ),
+        Cell: ({ row }) =>
+          // Use the row.canExpand and row.getToggleRowExpandedProps prop getter
+          // to build the toggle for expanding a row
+          row.canExpand ? (
+            <span
+              {...row.getToggleRowExpandedProps({
+                style: {
+                  // We can even use the row.depth property
+                  // and paddingLeft to indicate the depth
+                  // of the row
+                  paddingLeft: `${row.depth * 2}rem`,
+                },
+              })}
+            >
+              {row.isExpanded ? '👇' : '👉'}
+            </span>
+          ) : null,
+      },
+      {
+        Header: 'Year',
+        columns: [
+          {
+            Header: 'Month',
+            columns: [
+              {
+                Header: 'Month',
+                columns: [
+                  {
+                    Header: 'Date',
+                    accessor: 'startTimestamp'
+                  }
+                ]
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    []
+  )
+
+  return (
+    <Table columns={columns} data={data} />
+  )
 }
