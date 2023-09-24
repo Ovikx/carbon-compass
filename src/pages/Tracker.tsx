@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
 import { default as Report } from "../assets/report.jpg";
+import { default as ReportGif } from "../assets/report.gif";
 import { default as Exit } from "../assets/Close.png";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
@@ -304,9 +305,16 @@ export function Tracker() {
         <ParallaxLayer
           offset={4}
           speed={0.5}
-          className="text-3xl font-bold mb-5"
+          className="text-3xl font-bold mb-5 flex"
+          style={{
+            backgroundImage: `url(${ReportGif})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
-          Thanks for taking part and being aware of your Carbon Footprint!
+          <div className="m-auto text-emerald-600">
+            Thanks for taking part and being aware of your Carbon Footprint!
+          </div>
         </ParallaxLayer>
         <ParallaxLayer offset={5} speed={0.5}>
           <p className="text-3xl font-bold mb-10">
