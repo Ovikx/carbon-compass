@@ -160,7 +160,9 @@ export function Tracker() {
                       <p className="mt-1">Carbon Footprint: </p>
                       <div className="ml-2">
                         <p className="font-extrabold text-2xl  flex flex-row">
-                          {route ? route.distance * 0.5 : "N/A"}
+                          {route
+                            ? ((route.distance * 0.5) / 1000).toFixed(2)
+                            : "N/A"}
                           <p className=" my-auto ml-2 font-medium">kg</p>
                         </p>
                       </div>
@@ -330,7 +332,7 @@ export function Tracker() {
             backgroundSize: "cover",
           }}
         >
-          <div className="m-auto text-emerald-600">
+          <div className="m-auto text-white">
             Thanks for taking part and being aware of your Carbon Footprint!
           </div>
         </ParallaxLayer>
