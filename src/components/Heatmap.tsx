@@ -1,6 +1,6 @@
-import GoogleMapReact, { Heatmap } from "google-map-react";
+import GoogleMapReact from "google-map-react";
 import { CompositeData } from "../model/CompositeData";
-//import ClipLoader from "react-spinners/ClipLoader";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface HeatmapData {
   positions: {
@@ -62,27 +62,30 @@ export function Heatmap(props: Props) {
   };
 
   // Return empty div if no data passed in yet
-  // if (!props.compositeData)
-  //   return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
+  if (!props.compositeData)
+    return <ClipLoader color={"#ffffff"} loading={true} size={150} />;
 
   // Continue with heatmap data parsing
-  const heatmap: Heatmap = props.compositeData
-    ? parseData(props.compositeData)
-    : { positions: [], options: {} };
+  // const heatmap: Heatmap = props.compositeData
+  //   ? parseData(props.compositeData)
+  //   : { positions: [], options: {} };
 
-  const defaultProps = props.compositeData
-    ? {
-        center: heatmap.positions[0],
-        zoom: 11,
-      }
-    : { center: { lat: 29.714233, lng: -95.404075 }, zoom: 11 };
+  // const defaultProps = props.compositeData
+  //   ? {
+  //       center: heatmap.positions[0],
+  //       zoom: 11,
+  //     }
+  //   : { center: { lat: 29.714233, lng: -95.404075 }, zoom: 11 };
+
+  const heatmap = parseData(props.compositeData);
+  const defaultProps = { center: heatmap.positions[0], zoom: 11 };
 
   return (
     // Important! Always set the container height explicitly
-    <div className="h-110 w-110 mx-auto">
+    <div className="h-110 w-[700px]">
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+          key: "AIzaSyBL1xP5iEVz7h8yYSDTrNhSB85e2AWvx8k",
           libraries: ["visualization"],
         }}
         defaultCenter={defaultProps.center}

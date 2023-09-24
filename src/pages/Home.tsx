@@ -4,13 +4,6 @@ import { default as Trees } from "../assets/trees.svg";
 export function Home() {
   return (
     <>
-      <div className="text-gray-500 pt-10">
-        <div className="flex flex-col absolute left-10 pl-7">
-          <p className="text-2xl">Track your Carbon Footprint,</p>
-          <p className="text-2xl pr-[220px]">Smarter</p>
-        </div>
-      </div>
-
       <div
         style={{
           backgroundImage: `url(${Trees})`,
@@ -38,6 +31,7 @@ export function Home() {
           <FileUploader />
         </div>
       </div>
+
     </>
   );
 }
