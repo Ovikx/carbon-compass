@@ -3,7 +3,7 @@ import { Route } from "../model/Route";
 /**
  * Calculate the amount of carbon in kg wasted by taking this route
  */
-export function calculateCarbonWasted(route: Route): number {
+export function calculateCarbonSaved(route: Route): number {
   let carbonSaved = 0;
   if (route.activities.length > 0) {
     const mostProbableActivity = getMostProbableActivity(route);
