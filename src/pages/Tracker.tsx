@@ -6,6 +6,7 @@ import { default as Report } from "../assets/report.jpg";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
+import TopTrips from "../components/TopTrips";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -46,9 +47,9 @@ export function Tracker() {
               <Heatmap compositeData={data} />
               <p>HIIIIIIIIIIIIIIIIIIIIIIIIIII</p>
             </div>
-            {/* <div className="left-align text-lg mt-12 ml-5">
-              <p>Here's your carbon heat map!</p>
-            </div> */}
+            <div className="left-align text-lg mt-12 ml-5">
+              <TopTrips />
+            </div>
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
