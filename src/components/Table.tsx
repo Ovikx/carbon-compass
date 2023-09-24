@@ -1,4 +1,8 @@
-import { useReactTable, ExpandedState } from "@tanstack/react-table";
+import {
+  useReactTable,
+  ExpandedState,
+  getCoreRowModel,
+} from "@tanstack/react-table";
 import { useState } from "react";
 import { Route } from "../model/Route.ts";
 
@@ -34,6 +38,23 @@ export function Table({ data }: { data: Map<string, Map<string, Route[]>> }) {
       expanded,
     },
     onExpandedChange: setExpanded,
+    getCoreRowModel: getCoreRowModel(),
     debugTable: true,
   });
+  console.error(table);
+  return (
+    <table>
+      <tbody>
+        {table.getRowModel().rows.map((row) => {
+          return (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => {
+                return <td key={cell.id}>{"text"}</td>;
+              })}
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 }
