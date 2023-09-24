@@ -1,5 +1,6 @@
 import { default as Location } from "../assets/location.png";
 import { Route } from "../model/Route";
+import { calculateCarbonWasted } from "../utils/utils";
 
 interface Props {
   route: Route;
@@ -27,10 +28,12 @@ export default function MapRoute({ route, setSelectedRoute, selected }: Props) {
         <img src={Location} alt="location" className="w-12" />
         <p className="text-left">End</p>
       </div>
-      <p className=" flex lg  my-auto font-extrabold text-4xl ">
-        Carbon usage
-        <p className="text-2xl my-auto ml-2 mr-10">kg</p>
-      </p>
+      <div className="flex flex-row font-extrabold ">
+        <p className=" flex lg  my-auto text-4xl ">
+          {calculateCarbonWasted(route).toFixed(2)}
+        </p>
+        <p className="text-2xl my-auto ml-2 mr-10 font-bold">kg</p>
+      </div>
     </button>
   );
 }

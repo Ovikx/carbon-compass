@@ -12,7 +12,6 @@ export default function TopTrips({
   routes,
   setSelectedRoute,
 }: Props) {
-  console.log(selectedRoute);
   return (
     <>
       <div className="grid grid-rows-3 px-10 gap-2">

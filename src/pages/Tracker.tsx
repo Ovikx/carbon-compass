@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
 import { default as Report } from "../assets/report.jpg";
@@ -11,7 +10,6 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
-import { flattenHierarchy } from "../utils/utils";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
 
@@ -192,6 +190,7 @@ export function Tracker() {
                           return (
                             <div className="ml-20">
                               <Collapsible
+                                key={Math.random()}
                                 trigger={
                                   subcategory.charAt(0).toUpperCase() +
                                   subcategory.toLowerCase().slice(1)

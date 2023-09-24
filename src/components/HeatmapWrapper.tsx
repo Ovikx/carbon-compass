@@ -4,7 +4,7 @@ import { Heatmap } from "./Heatmap";
 import TopTrips from "./TopTrips";
 import { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
-import { flattenHierarchy } from "../utils/utils";
+import { calculateCarbonWasted, flattenHierarchy } from "../utils/utils";
 
 interface Props {
   compositeData: CompositeData | null;
@@ -16,7 +16,9 @@ export function HeatmapWrapper({ compositeData }: Props) {
 
   useEffect(() => {
     if (compositeData) {
-      const flattened = flattenHierarchy(compositeData.routes);
+      const flattened = flattenHierarchy(compositeData.routes).sort(
+        (a, b) => calculateCarbonWasted(b) - calculateCarbonWasted(a),
+      );
       setRoutes(flattened);
       setSelectedRoute(flattened[0]);
     }

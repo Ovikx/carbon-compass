@@ -8,6 +8,7 @@ import { FileProvider } from "./components/FileContext.tsx";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { MapProvider } from "./components/MapContext.tsx";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,9 +28,11 @@ export const firestore = getFirestore(initializeApp(firebaseConfig));
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <FileProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <MapProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </MapProvider>
     </FileProvider>
   </React.StrictMode>,
 );

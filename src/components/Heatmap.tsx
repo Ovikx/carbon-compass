@@ -2,8 +2,8 @@ import GoogleMapReact from "google-map-react";
 import { CompositeData } from "../model/CompositeData";
 import ClipLoader from "react-spinners/ClipLoader";
 import { Route } from "../model/Route";
-import {} from "google-map-react";
-import { useState } from "react";
+import { useEffect, useContext } from "react";
+import { MapContext } from "./MapContext";
 
 interface HeatmapData {
   positions: {
@@ -42,51 +42,70 @@ function parseData(compositeData: CompositeData): HeatmapData {
 }
 
 export function Heatmap(props: Props) {
-  const [map, setMap] = useState<any>(null);
-  const [directionsService, setDirectionsService] =
-    useState<google.maps.DirectionsService | null>(null);
-  const [directionsRenderer, setDirectionsRenderer] =
-    useState<google.maps.DirectionsRenderer | null>(null);
+  const {
+    directionsRenderer,
+    directionsService,
+    setDirectionsRenderer,
+    setDirectionsService,
+    setMap,
+  } = useContext(MapContext);
+
   const apiIsLoaded = (map: any) => {
+    console.log("API LOADED");
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
+    console.log("DIRECTIONS  LOADED");
     directionsRenderer.setMap(map);
-    setMap(map);
-    setDirectionsService(directionsService);
-    setDirectionsRenderer(directionsRenderer);
+    if (setMap) {
+      console.log("SETTING MAP");
+      setMap(map);
+    }
+
+    if (setDirectionsService) {
+      console.log("SETTING DIRECTIONS SERVICE");
+      setDirectionsService(directionsService);
+    }
+
+    if (setDirectionsRenderer) {
+      console.log("SETTING DIRECTIONS RENDERER");
+      setDirectionsRenderer(directionsRenderer);
+    }
   };
 
-  if (map && directionsService && directionsRenderer) {
-    const origin = {
-      lat: props.selectedRoute?.start.latitude ?? 0,
-      lng: props.selectedRoute?.start.longitude ?? 0,
-    };
-    const destination = {
-      lat: props.selectedRoute?.end.latitude ?? 0,
-      lng: props.selectedRoute?.end.longitude ?? 0,
-    };
-    console.log("RENDERING ROUTE");
-    console.log(origin, destination);
+  useEffect(() => {
+    if (directionsService && directionsRenderer) {
+      console.log("RENDERING");
+      const origin = {
+        lat: props.selectedRoute?.start.latitude ?? 0,
+        lng: props.selectedRoute?.start.longitude ?? 0,
+      };
+      const destination = {
+        lat: props.selectedRoute?.end.latitude ?? 0,
+        lng: props.selectedRoute?.end.longitude ?? 0,
+      };
 
-    directionsService.route(
-      {
-        origin: origin,
-        destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-      },
-      (result, status) => {
-        directionsRenderer.setDirections({
-          routes: [],
-          geocoded_waypoints: [],
-        });
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsRenderer.setDirections(result);
-        } else {
-          console.error(`error fetching directions ${result}`);
-        }
-      },
-    );
-  }
+      console.log(origin, destination);
+      directionsService.route(
+        {
+          origin: origin,
+          destination: destination,
+          travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (result, status) => {
+          directionsRenderer.setDirections({
+            routes: [],
+            geocoded_waypoints: [],
+          });
+          if (status === google.maps.DirectionsStatus.OK) {
+            directionsRenderer.setDirections(result);
+            console.log("rendering route");
+          } else {
+            console.error(`error fetching directions ${result}`);
+          }
+        },
+      );
+    }
+  }, [directionsRenderer, directionsService, props.selectedRoute]);
 
   // Return empty div if no data passed in yet
   if (!props.compositeData)
