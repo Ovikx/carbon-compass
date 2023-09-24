@@ -1,6 +1,6 @@
 import { default as Location } from "../assets/location.png";
 import { Route } from "../model/Route";
-import { calculateCarbonWasted } from "../utils/utils";
+import { getCarbonForCar } from "../utils/utils";
 import { useState, useMemo } from "react";
 import { mapApiKey } from "./Heatmap";
 
@@ -65,7 +65,7 @@ export default function MapRoute({ route, setSelectedRoute, selected }: Props) {
       </div>
       <div className="flex flex-row font-extrabold ">
         <p className=" flex lg  my-auto text-4xl ">
-          {calculateCarbonWasted(route).toFixed(2)}
+          {getCarbonForCar(route.distance).toFixed(2)}
         </p>
         <p className="text-2xl my-auto ml-2 mr-10 font-bold">kg</p>
       </div>
