@@ -344,35 +344,35 @@ export function Tracker() {
           ) : (
             <div className="flex flex-row justify-center align-items h-10 ">
               <TextField
-            error={inputValue.length === 0}
-            id="outlined-basic"
-            label="Enter Username"
-            variant="outlined"
-            className="pr-10"
-            value={inputValue}
-            onSubmit={async () => {
-              setUsername(inputValue);
-              await registerUser(username, carbonSaved);
-              await addLeaderboardToUser(username, leaderboardValue);
-            }}
-            onChange={(e) => {
-              setInputValue(e.target.value);
-            }}
-          />
+                error={inputValue.length === 0}
+                id="outlined-basic"
+                label="Enter Username"
+                variant="outlined"
+                className="pr-10"
+                value={inputValue}
+                onSubmit={async () => {
+                  setUsername(inputValue);
+                  await registerUser(username, carbonSaved);
+                  await addLeaderboardToUser(username, leaderboardValue);
+                }}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                }}
+              />
 
-          <div className="flex flex-row justify-center align-middle py-4"></div>
+              <div className="flex flex-row justify-center align-middle py-4"></div>
 
-          <TextField
-            error={leaderboardValue.length === 0}
-            id="outlined-basic"
-            label="Leaderboard Invite"
-            variant="outlined"
-            value={leaderboardValue}
-            onSubmit={() => {}}
-            onChange={(e) => {
-              setLeaderboardValue(e.target.value);
-            }}
-          />
+              <TextField
+                error={leaderboardValue.length === 0}
+                id="outlined-basic"
+                label="Leaderboard Invite"
+                variant="outlined"
+                value={leaderboardValue}
+                onSubmit={() => {}}
+                onChange={(e) => {
+                  setLeaderboardValue(e.target.value);
+                }}
+              />
               <div className="my-2 ml-5">
                 <Button
                   variant="contained"

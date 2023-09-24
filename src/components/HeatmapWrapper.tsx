@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { ClipLoader } from "react-spinners";
 import { flattenHierarchy, getCarbonForCar } from "../utils/utils";
 import AltEmissions from "./AltEmissions";
+import { Suggestion } from "./Suggestion";
 
 interface Props {
   compositeData: CompositeData | null;
@@ -41,23 +42,21 @@ export function HeatmapWrapper({ compositeData }: Props) {
           />
         </div>
       </div>
-      <div className="py-32">
-        <h1 className="font-bold text-4xl">Taking the train instead...</h1>
-        <div className="py-10 grid grid-cols-2 gap-x-5 gap-y-10">
+      <div className="flex flex-col gap-10 py-32">
+        <Suggestion title="Taking the train instead...">
           <AltEmissions route={selectedRoute} transportType="IN_TRAIN" />
           <p className="flex items-center font-medium text-2xl pr-4">
             If you can, choose the train for a greener and stress-free commute,
             reducing traffic congestion and helping the environment.
           </p>
-        </div>
-        <h1 className="font-bold text-4xl pt-10">Taking the bus instead...</h1>
-        <div className="py-10 grid grid-cols-2 gap-x-5 gap-y-10 ">
+        </Suggestion>
+        <Suggestion title="Taking the bus instead...">
           <AltEmissions route={selectedRoute} transportType="IN_BUS" />
           <p className="flex items-center font-medium text-2xl pr-4">
             Opt for the bus to save money, reduce your carbon footprint, and
             ease traffic congestion on our roads.
           </p>
-        </div>
+        </Suggestion>
       </div>
     </div>
   );
