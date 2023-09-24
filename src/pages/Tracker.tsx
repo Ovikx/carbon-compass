@@ -3,16 +3,14 @@ import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
 import { default as Report } from "../assets/report.jpg";
+import { default as Exit } from "../assets/Close.png";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
-import TopTrips from "../components/TopTrips";
-import Modal from "react-modal";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
 import { flattenHierarchy } from "../utils/utils";
-import RouteModal from "../components/RouteModal";
 import { Dialog } from "@headlessui/react";
 
 export function Tracker() {
@@ -30,7 +28,7 @@ export function Tracker() {
   }, [fileContext.file]);
 
   return (
-    <div className="mt-24">
+    <div className="mt-24 overflow-auto max-h-[400px]">
       <Parallax pages={4}>
         <ParallaxLayer
           speed={1}
@@ -76,28 +74,90 @@ export function Tracker() {
         </ParallaxLayer>
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align ">
-            <h2 className="left-align">Table</h2>
-            <button onClick={() => setIsOpen(true)}>view trip</button>
+            <h2 className="left-align text-4xl font-bold pb-5">
+              View All Past Data
+            </h2>
             <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
               <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
               <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-                <Dialog.Panel className="mx-auto w-1/2 h-1/2 rounded bg-white justify-center align-middle">
-                  <Dialog.Title>
-                    Trip from {route?.startTimestamp} to {route?.endTime} of{" "}
-                    {route?.distance} km wasting {route?.distance * 5} kg.
-                  </Dialog.Title>
+                <Dialog.Panel className="p-6 mx-auto w-4/6 h-4/6 rounded bg-white justify-center align-middle">
+                  <div className="flex flex-row justify-between">
+                    <Dialog.Title>
+                      <div>
+                        <p className="text-3xl font-medium">
+                          {route
+                            ? new Date(route?.startTimestamp).toLocaleString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                },
+                              )
+                            : "N/A"}{" "}
+                          to{" "}
+                          {route
+                            ? new Date(route?.endTimestamp).toLocaleString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                },
+                              )
+                            : "N/A"}{" "}
+                        </p>
+                      </div>
+                    </Dialog.Title>
+                    <div className="">
+                      <button onClick={() => setIsOpen(false)}>
+                        <img src={Exit} className="h-6 w-6 " />{" "}
+                      </button>
+                    </div>
+                  </div>
                   <Dialog.Description>
-                    This will permanently deactivate your account
+                    <p className="flex flex-row align-middle mt-3">
+                      <p className="mt-1">Carbon Footprint: </p>
+                      <div className="ml-2">
+                        <p className="font-extrabold text-2xl  flex flex-row">
+                          {route ? route.distance * 5 : "N/A"}
+                          <p className=" my-auto ml-2 font-medium">kg</p>
+                        </p>
+                      </div>
+                    </p>
+                    <p>Trip Distance: {route ? route.distance : "N/A"} km</p>
+                    <p>
+                      Duration:{" "}
+                      {route
+                        ? Math.floor(
+                            (route?.endTimestamp - route?.startTimestamp) /
+                              (1000 * 60 * 60 * 24),
+                          )
+                        : "N/A"}{" "}
+                      days{" "}
+                      {route
+                        ? Math.floor(
+                            (route?.endTimestamp -
+                              route?.startTimestamp / (1000 * 60 * 60)) %
+                              24,
+                          )
+                        : "N/A"}{" "}
+                      hours.
+                    </p>
                   </Dialog.Description>
-                  {/* <p>This amount of Carbon could have been saved: {carbonSaved}</p> */}
-                  <button onClick={() => setIsOpen(false)}>Deactivate</button>
-                  <button onClick={() => setIsOpen(false)}>Cancel</button>
                 </Dialog.Panel>
               </div>
             </Dialog>
           </div>
           {!!data ? (
-            <div className="flex flex-col text-xl gap-3 border border-black mx-80">
+            <div className="flex flex-col text-left text-xl gap-3 border border-emerald mx-80 pl-6 pt-5 rounded-lg shadow-sm">
+              <div className="flex flex-row pt-2 pb-2 ">
+                <h2>
+                  Year &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Record
+                </h2>
+              </div>
               {Array.from(data.routes.keys())
                 .sort()
                 .reverse()
@@ -107,7 +167,7 @@ export function Tracker() {
                       {Array.from(data.routes.get(category)!.keys())
                         // sort by month
                         .sort((a, b) => {
-                          let months = [
+                          const months = [
                             "JANUARY",
                             "FEBRUARY",
                             "MARCH",
@@ -121,28 +181,60 @@ export function Tracker() {
                             "NOVEMBER",
                             "DECEMBER",
                           ];
-                          console.log(b);
-                          console.log(months.indexOf(b));
-                          return months.indexOf(a) - months.indexOf(a);
+                          return (
+                            months.indexOf(a.toUpperCase()) -
+                            months.indexOf(b.toUpperCase())
+                          );
                         })
                         .map((subcategory) => {
                           return (
-                            <Collapsible trigger={subcategory}>
-                              {data.routes
-                                .get(category)!
-                                .get(subcategory)!
-                                .sort((a, b) => {
-                                  return b.startTimestamp - a.startTimestamp;
-                                })
-                                .map((route: Route) => {
-                                  return (
-                                    <div>
-                                      <h3>{route.startTimestamp}</h3>
-                                      <p>{route.endTimestamp}</p>
-                                    </div>
-                                  );
-                                })}
-                            </Collapsible>
+                            <div className="ml-20">
+                              <Collapsible
+                                trigger={
+                                  subcategory.charAt(0).toUpperCase() +
+                                  subcategory.toLowerCase().slice(1)
+                                }
+                              >
+                                {data.routes
+                                  .get(category)!
+                                  .get(subcategory)!
+                                  .sort((a, b) => {
+                                    return b.startTimestamp - a.startTimestamp;
+                                  })
+                                  .map((route: Route) => {
+                                    return (
+                                      <div
+                                        className="ml-28"
+                                        onClick={() => {
+                                          setRoute(route);
+                                          setIsOpen(true);
+                                          console.log(route);
+                                        }}
+                                      >
+                                        <div className="flex flex-row hover:cursor-pointer">
+                                          <h3 className="p-2">
+                                            {new Date(
+                                              route.startTimestamp,
+                                            ).toLocaleString("en-US", {
+                                              year: "numeric",
+                                              month: "long",
+                                              day: "numeric",
+                                            })}{" "}
+                                            to{" "}
+                                            {new Date(
+                                              route.endTimestamp,
+                                            ).toLocaleString("en-US", {
+                                              year: "numeric",
+                                              month: "long",
+                                              day: "numeric",
+                                            })}
+                                          </h3>
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                              </Collapsible>
+                            </div>
                           );
                         })}
                     </Collapsible>
