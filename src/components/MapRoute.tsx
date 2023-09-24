@@ -1,5 +1,4 @@
 import { default as Location } from "../assets/location.png";
-import { default as Line } from "../assets/line.png";
 
 interface Props {
   city1: string;
