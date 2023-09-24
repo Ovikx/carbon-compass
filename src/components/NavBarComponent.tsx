@@ -25,14 +25,6 @@ export function NavBarComponent() {
                 Leaderboard
               </NavLink>
             </li>
-            <li>
-              <NavLink
-                to="/tracker"
-                className="text-lg text-green-500 font-bold hover:text-green-700"
-              >
-                Tracker
-              </NavLink>
-            </li>
           </ul>
         </div>
       </div>
