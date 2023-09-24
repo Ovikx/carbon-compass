@@ -82,7 +82,7 @@ export function Heatmap(props: Props) {
     <div className="h-110 w-110 mx-auto">
       <GoogleMapReact
         bootstrapURLKeys={{
-          key: import.meta.env.VITE_GOOGLE_MAP_API_KEY,
+          key: "AIzaSyBL1xP5iEVz7h8yYSDTrNhSB85e2AWvx8k",
           libraries: ["visualization"],
         }}
         defaultCenter={defaultProps.center}
