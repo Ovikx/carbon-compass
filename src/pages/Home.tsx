@@ -31,15 +31,18 @@ export function Home() {
         <div className="mt-40">
           <div className="text-gray-500 pt-10 ">
             <div className="flex flex-col absolute left-10 pl-7 ml-10">
-              <p className="text-4xl text-black font-medium text-left">
+              <p className="text-5xl text-black font-medium text-left">
                 Track your Carbon Footprint
               </p>
-              <p className="text-4xl text-green-500 font-bold text-left mt-2">Smarter</p>
+              <p className="text-6xl text-green-500 font-bold text-left mt-2">
+                Smarter
+              </p>
             </div>
           </div>
           <FileUploader />
           <p className="mt-10 ml-20 pl-5 text-left">
-            Not sure what file to upload? To download the location data zip, check
+            Not sure what file to upload? To download the location data zip,
+            check
             <a
               className="text-emerald-400"
               href="https://takeout.google.com/settings/takeout/custom/location_history"
