@@ -14,7 +14,7 @@ function App() {
       <div
         className="relative"
         style={{
-          backgroundImage: `url(${Background})`,
+          // backgroundImage: `url(${Background})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           height: "100vh",
