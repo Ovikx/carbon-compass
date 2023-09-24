@@ -9,7 +9,7 @@ import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import Modal from "react-modal";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
-import { Category } from "../components/Category";
+import Collapsible from "react-collapsible";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -47,7 +47,41 @@ export function Tracker() {
               Your Carbon Heatmap
             </h1>
             <HeatmapWrapper compositeData={data} />
-            {!!data ? <Category data={data?.routes} /> : <></>}
+            {!!data ? 
+            <div>
+            {Array.from(data.routes.keys())
+              .sort()
+              .reverse()
+              .map((category) => {
+                return (
+                  <Collapsible trigger={category}>
+                    {Array.from(data.routes.get(category)!.keys())
+                      .sort()
+                      .map((subcategory) => {
+                        return (
+                          <Collapsible trigger={subcategory}>
+                            {data.routes
+                              .get(category)!
+                              .get(subcategory)!
+                              .sort((a, b) => {
+                                return b.startTimestamp - a.startTimestamp;
+                              })
+                              .map((route: Route) => {
+                                return (
+                                  <div>
+                                    <h3>{route.startTimestamp}</h3>
+                                    <p>{route.endTimestamp}</p>
+                                  </div>
+                                );
+                              })}
+                          </Collapsible>
+                        );
+                      })}
+                  </Collapsible>
+                );
+              })}
+          </div>
+            : <></>}
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
