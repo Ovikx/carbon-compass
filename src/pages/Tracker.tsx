@@ -23,6 +23,7 @@ import {
 } from "../utils/utils";
 import { Button } from "@mui/material";
 import { BaseMap } from "../components/BaseMap";
+import ModalMapRoute from "../components/ModalMapRoute";
 
 const transition = {
   initial: { opacity: 0 },
@@ -158,69 +159,14 @@ export function Tracker() {
                     </div>
                   </div>
                   <Dialog.Description>
-                    <BaseMap selectedRoute={route} />
-                    <p className="flex flex-row align-middle mt-3">
-                      <p className="mt-1">Carbon Footprint: </p>
-                      <div className="ml-2">
-                        <p className="font-extrabold text-2xl  flex flex-row">
-                          {route ? route.distance * 0.5 : "N/A"}
-                          <p className=" my-auto ml-2 font-medium">kg</p>
-                        </p>
+                    <div className="grid grid-cols-2">
+                      <div className="pt-5 ">
+                        <BaseMap selectedRoute={route} />
                       </div>
-                    </p>
-                    <p>
-                      Carbon Saved:{" "}
-                      {route ? calculateCarbonSaved(route) : "N/A"}
-                    </p>
-
-                    <p>
-                      Activity:{" "}
-                      {route
-                        ? getNameFromActivityName(
-                            route?.activities.reduce(
-                              (maxObject, currentObject) => {
-                                return currentObject.probability >
-                                  maxObject.probability
-                                  ? currentObject
-                                  : maxObject;
-                              },
-                              { type: "", probability: -Infinity },
-                            ).type,
-                          ) +
-                          " (" +
-                          route?.activities
-                            .reduce(
-                              (maxObject, currentObject) => {
-                                return currentObject.probability >
-                                  maxObject.probability
-                                  ? currentObject
-                                  : maxObject;
-                              },
-                              { type: "", probability: -Infinity },
-                            )
-                            .probability.toPrecision(2) +
-                          "% Confident)"
-                        : "N/A"}
-                    </p>
-                    <p>Trip Distance: {route ? route.distance : "N/A"} km</p>
-                    <p>
-                      Duration:{" "}
-                      {route
-                        ? Math.floor(
-                            (route?.endTimestamp - route?.startTimestamp) /
-                              (1000 * 60 * 60 * 24),
-                          )
-                        : "N/A"}{" "}
-                      days{" "}
-                      {route
-                        ? Math.floor(
-                            (route?.endTimestamp -
-                              route?.startTimestamp / (1000 * 60 * 60)) %
-                              24,
-                          )
-                        : "N/A"}{" "}
-                      hours.
-                    </p>
+                      <div className="ml-10 ">
+                        {route && <ModalMapRoute route={route} />}
+                      </div>
+                    </div>
                   </Dialog.Description>
                 </Dialog.Panel>
               </div>
@@ -267,6 +213,7 @@ export function Tracker() {
                           return (
                             <div className="ml-20">
                               <Collapsible
+                                className="hover:bg-gray-100"
                                 key={Math.random()}
                                 trigger={
                                   subcategory.charAt(0).toUpperCase() +
@@ -282,7 +229,7 @@ export function Tracker() {
                                   .map((route: Route) => {
                                     return (
                                       <div
-                                        className="ml-28 hover:bg-gray-100"
+                                        className="ml-28 hover:bg-gray-100 py-2"
                                         onClick={() => {
                                           setRoute(route);
                                           setIsOpen(true);
@@ -333,7 +280,7 @@ export function Tracker() {
             backgroundSize: "cover",
           }}
         >
-          <div className="m-auto text-emerald-600">
+          <div className="m-auto text-emerald-500 p-8 bg-opacity-25 bg-black w-screen">
             Thanks for taking part and being aware of your Carbon Footprint!
           </div>
         </ParallaxLayer>
