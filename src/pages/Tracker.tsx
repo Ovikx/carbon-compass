@@ -23,7 +23,7 @@ export function Tracker() {
       <Parallax pages={4}>
         <ParallaxLayer
           speed={1}
-          //   factor={1}
+          factor={1}
           style={{
             backgroundImage: `url(${Report})`,
             backgroundRepeat: "no-repeat",
