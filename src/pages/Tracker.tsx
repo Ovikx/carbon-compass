@@ -47,41 +47,6 @@ export function Tracker() {
               Your Carbon Heatmap
             </h1>
             <HeatmapWrapper compositeData={data} />
-            {!!data ? 
-            <div>
-            {Array.from(data.routes.keys())
-              .sort()
-              .reverse()
-              .map((category) => {
-                return (
-                  <Collapsible trigger={category}>
-                    {Array.from(data.routes.get(category)!.keys())
-                      .sort()
-                      .map((subcategory) => {
-                        return (
-                          <Collapsible trigger={subcategory}>
-                            {data.routes
-                              .get(category)!
-                              .get(subcategory)!
-                              .sort((a, b) => {
-                                return b.startTimestamp - a.startTimestamp;
-                              })
-                              .map((route: Route) => {
-                                return (
-                                  <div>
-                                    <h3>{route.startTimestamp}</h3>
-                                    <p>{route.endTimestamp}</p>
-                                  </div>
-                                );
-                              })}
-                          </Collapsible>
-                        );
-                      })}
-                  </Collapsible>
-                );
-              })}
-          </div>
-            : <></>}
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
@@ -104,8 +69,45 @@ export function Tracker() {
         </ParallaxLayer>
         <ParallaxLayer offset={3} speed={0.25}>
           <div className="left-align pointer-events-none">
-            <h2 className="left-align">Table</h2>
+            <h2 className="left-align text-4xl">Table</h2>
           </div>
+          {!!data ? (
+            <div className="flex flex-col text-xl gap-3">
+              {Array.from(data.routes.keys())
+                .sort()
+                .reverse()
+                .map((category) => {
+                  return (
+                    <Collapsible trigger={category}>
+                      {Array.from(data.routes.get(category)!.keys())
+                        .sort()
+                        .map((subcategory) => {
+                          return (
+                            <Collapsible trigger={subcategory}>
+                              {data.routes
+                                .get(category)!
+                                .get(subcategory)!
+                                .sort((a, b) => {
+                                  return b.startTimestamp - a.startTimestamp;
+                                })
+                                .map((route: Route) => {
+                                  return (
+                                    <div>
+                                      <h3>{route.startTimestamp}</h3>
+                                      <p>{route.endTimestamp}</p>
+                                    </div>
+                                  );
+                                })}
+                            </Collapsible>
+                          );
+                        })}
+                    </Collapsible>
+                  );
+                })}
+            </div>
+          ) : (
+            <></>
+          )}
         </ParallaxLayer>
       </Parallax>
     </div>
