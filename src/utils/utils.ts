@@ -73,3 +73,17 @@ export function getNameFromActivityName(activity: string) {
       return "Invalid";
   }
 }
+
+export function flattenHierarchy(data: Map<string, Map<string, Route[]>>): Route[] {
+  let flatData: Route[] = [];
+  data.forEach((value, _) => {
+    value.forEach((value, _) => {
+      flatData = flatData.concat(value);
+    });
+  });
+  flatData.sort((a, b) => {
+    return b.startTimestamp - a.startTimestamp;
+  });
+  
+  return flatData;
+}
