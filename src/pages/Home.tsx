@@ -1,6 +1,8 @@
 import { FileUploader } from "../components/FileUploader";
 import { default as Trees } from "../assets/trees.svg";
 import { motion } from "framer-motion";
+import BusEmissions from "../components/BusEmissions";
+import TrainEmissions from "../components/TrainEmissions";
 
 const transition = {
   initial: { opacity: 0 },
