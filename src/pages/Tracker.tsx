@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { Heatmap } from "../components/Heatmap";
 import { Parallax, ParallaxLayer } from "@react-spring/parallax";
 import { default as Environment } from "../assets/environment.svg";
 import { default as Report } from "../assets/report.jpg";
+import { default as ReportGif } from "../assets/report.gif";
 import { default as Exit } from "../assets/Close.png";
 import { FileContext } from "../components/FileContext";
 import { Unzip } from "../read/Unzip";
@@ -11,16 +11,16 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { HeatmapWrapper } from "../components/HeatmapWrapper";
 import Collapsible from "react-collapsible";
 import { Route } from "../model/Route";
-import {
-  calculateCarbonSaved,
-  flattenHierarchy,
-  getCarbonForCar,
-  getIconFromActivityName,
-  getMostProbableActivity,
-} from "../utils/utils";
+import { addLeaderboardToUser, registerUser } from "../firebase/controller";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
-import { addLeaderboardToUser, registerUser } from "../firebase/controller";
+import { addLeaderboardToUser } from "../firebase/controller";
+import { motion } from "framer-motion";
+const transition = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 1 } },
+  exit: { opacity: 0, transition: { duration: 1 } },
+};
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -76,7 +76,13 @@ export function Tracker() {
   };
 
   return (
-    <div className="mt-24 overflow-auto max-h-[400px]">
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={transition}
+      className="mt-24 overflow-auto max-h-[400px]"
+    >
       <Parallax pages={7}>
         <ParallaxLayer
           speed={1}
@@ -168,7 +174,7 @@ export function Tracker() {
                       <p className="mt-1">Carbon Footprint: </p>
                       <div className="ml-2">
                         <p className="font-extrabold text-2xl  flex flex-row">
-                          {route ? route.distance * 5 : "N/A"}
+                          {route ? route.distance * 0.5 : "N/A"}
                           <p className=" my-auto ml-2 font-medium">kg</p>
                         </p>
                       </div>
@@ -272,6 +278,7 @@ export function Tracker() {
                           return (
                             <div className="ml-20">
                               <Collapsible
+                                key={Math.random()}
                                 trigger={
                                   subcategory.charAt(0).toUpperCase() +
                                   subcategory.toLowerCase().slice(1)
@@ -330,9 +337,16 @@ export function Tracker() {
         <ParallaxLayer
           offset={4}
           speed={0.5}
-          className="text-3xl font-bold mb-5"
+          className="text-3xl font-bold mb-5 flex"
+          style={{
+            backgroundImage: `url(${ReportGif})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+          }}
         >
-          Thanks for taking part and being aware of your Carbon Footprint!
+          <div className="m-auto text-emerald-600">
+            Thanks for taking part and being aware of your Carbon Footprint!
+          </div>
         </ParallaxLayer>
         <ParallaxLayer offset={5} speed={0.5}>
           <p className="text-3xl font-bold mb-10">
@@ -355,6 +369,6 @@ export function Tracker() {
           />
         </ParallaxLayer>
       </Parallax>
-    </div>
+    </motion.div>
   );
 }

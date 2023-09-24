@@ -95,8 +95,8 @@ export function flattenHierarchy(
   data: Map<string, Map<string, Route[]>>,
 ): Route[] {
   let flatData: Route[] = [];
-  data.forEach((value, _) => {
-    value.forEach((value, _) => {
+  data.forEach((value) => {
+    value.forEach((value) => {
       flatData = flatData.concat(value);
     });
   });

@@ -34,12 +34,21 @@ export function Home() {
               <p className="text-4xl text-black font-medium text-left">
                 Track your Carbon Footprint
               </p>
-              <p className="text-4xl  text-green-500 font-bold text-left mt-2">
-                Smarter
-              </p>
+              <p className="text-4xl text-green-500 font-bold text-left mt-2">Smarter</p>
             </div>
           </div>
           <FileUploader />
+          <p className="mt-10 ml-20 pl-5 text-left">
+            Not sure what file to upload? To download the location data zip, check
+            <a
+              className="text-emerald-400"
+              href="https://takeout.google.com/settings/takeout/custom/location_history"
+            >
+              {" "}
+              here
+            </a>
+            .
+          </p>
         </div>
       </motion.div>
     </>
