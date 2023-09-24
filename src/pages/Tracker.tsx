@@ -14,13 +14,16 @@ import { Route } from "../model/Route";
 import { flattenHierarchy } from "../utils/utils";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
+import { addLeaderboardToUser } from "../firebase/controller";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [username, setUsername] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
+
   useEffect(() => {
     if (fileContext.file) {
       Unzip.unzipLocationHistory(fileContext.file).then((res) => {
@@ -29,9 +32,20 @@ export function Tracker() {
     }
   }, [fileContext.file]);
 
+  type StringDict<T> = {
+    [key: string]: T;
+  };
+  const dictionary: StringDict<string> = {
+    IN_PASSENGER_VEHICLE: "Vehicle",
+  };
+
+  const convertActivity = (activity: string) => {
+    return dictionary[activity];
+  };
+
   return (
     <div className="mt-24 overflow-auto max-h-[400px]">
-      <Parallax pages={4}>
+      <Parallax pages={7}>
         <ParallaxLayer
           speed={1}
           factor={1}
@@ -48,7 +62,7 @@ export function Tracker() {
             Your Carbon Footprint Report
           </h1>
         </ParallaxLayer>
-        <ParallaxLayer offset={1} speed={0.5} style={{ backgroundColor: "" }}>
+        <ParallaxLayer offset={1} speed={0.25} style={{ backgroundColor: "" }}>
           <div className="flex flex-col justify-center align-middle">
             <h1 className="left-align text-4xl font-bold pt-90  mb-5">
               Your Carbon Heatmap
@@ -56,7 +70,7 @@ export function Tracker() {
             <HeatmapWrapper compositeData={data} />
           </div>
         </ParallaxLayer>
-        <ParallaxLayer offset={2} speed={0.5}>
+        {/* <ParallaxLayer offset={2} speed={0.5}>
           <div className="flex flex-row justify-center align-middle">
             <div className="left-align pointer-events-none">
               <p className="left-align">Breakdown</p>
@@ -73,8 +87,8 @@ export function Tracker() {
               }}
             ></div>
           </div>
-        </ParallaxLayer>
-        <ParallaxLayer offset={3} speed={0.25}>
+        </ParallaxLayer> */}
+        <ParallaxLayer offset={2} speed={0.25} factor={2}>
           <div className="left-align ">
             <h2 className="left-align text-4xl font-bold pb-5">
               View All Past Data
@@ -127,6 +141,35 @@ export function Tracker() {
                         </p>
                       </div>
                     </p>
+                    <p>
+                      Activity:{" "}
+                      {route
+                        ? convertActivity(
+                            route?.activities.reduce(
+                              (maxObject, currentObject) => {
+                                return currentObject.probability >
+                                  maxObject.probability
+                                  ? currentObject
+                                  : maxObject;
+                              },
+                              { type: "", probability: -Infinity },
+                            ).type,
+                          ) +
+                          " (" +
+                          route?.activities
+                            .reduce(
+                              (maxObject, currentObject) => {
+                                return currentObject.probability >
+                                  maxObject.probability
+                                  ? currentObject
+                                  : maxObject;
+                              },
+                              { type: "", probability: -Infinity },
+                            )
+                            .probability.toPrecision(2) +
+                          "% Confident)"
+                        : "N/A"}
+                    </p>
                     <p>Trip Distance: {route ? route.distance : "N/A"} km</p>
                     <p>
                       Duration:{" "}
@@ -152,7 +195,7 @@ export function Tracker() {
             </Dialog>
           </div>
           {!!data ? (
-            <div className="flex flex-col text-left text-xl gap-3 border border-emerald mx-80 pl-6 pt-5 rounded-lg shadow-sm">
+            <div className="flex flex-col text-left text-xl gap-3 border border-emerald mx-80 pl-6 pt-5 pb-5 rounded-lg shadow-sm">
               <div className="flex flex-row pt-2 pb-2 ">
                 <h2>
                   Year &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Month
@@ -247,7 +290,32 @@ export function Tracker() {
             <ClipLoader color={"#000000"} size={75} className="my-20" />
           )}
         </ParallaxLayer>
-        <TextField id="outlined-basic" label="Outlined" variant="outlined" />
+        <ParallaxLayer
+          offset={4}
+          speed={0.5}
+          className="text-3xl font-bold mb-5"
+        >
+          Thanks for taking part and being aware of your Carbon Footprint!
+        </ParallaxLayer>
+        <ParallaxLayer offset={5} speed={0.5}>
+          <p className="text-3xl font-bold mb-10">
+            Add a username to compare your Carbon Footprint with others!
+          </p>
+          <TextField
+            error={inputValue.length === 0}
+            id="outlined-basic"
+            label="Enter Username"
+            variant="outlined"
+            value={inputValue}
+            onSubmit={() => {
+              setUsername(inputValue);
+              // addLeaderboardToUser(username, leaderboard);
+            }}
+            onChange={(e) => {
+              setInputValue(e.target.value);
+            }}
+          />
+        </ParallaxLayer>
       </Parallax>
     </div>
   );
