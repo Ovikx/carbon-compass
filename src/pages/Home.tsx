@@ -46,6 +46,7 @@ export function Home() {
             <a
               className="text-emerald-400"
               href="https://takeout.google.com/settings/takeout/custom/location_history"
+              target="_blank"
             >
               {" "}
               here
