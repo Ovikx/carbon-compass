@@ -8,10 +8,15 @@ import { Unzip } from "../read/Unzip";
 import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import { flattenHierarchy } from "../utils/utils";
-import Modal from "react-modal";
+import RouteModal from "../components/RouteModal";
+import { Route } from "../model/Route";
+import { Dialog } from "@headlessui/react";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const [route, setRoute] = useState<Route | null>(null);
   const fileContext = useContext(FileContext);
   useEffect(() => {
     if (fileContext.file) {
@@ -66,10 +71,27 @@ export function Tracker() {
             ></div>
           </div>
         </ParallaxLayer>
-        <RouteModal Props={(route, time, distance, carbonWaste, carbonSaved)} />
         <ParallaxLayer offset={3} speed={0.25}>
-          <div className="left-align pointer-events-none">
-            <h2 className="left-align text-4xl">Table</h2>
+          <div className="left-align ">
+            <h2 className="left-align">Table</h2>
+            <button onClick={() => setIsOpen(true)}>view trip</button>
+            <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+              <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+              <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+                <Dialog.Panel className="mx-auto w-1/2 h-1/2 rounded bg-white justify-center align-middle">
+                  <Dialog.Title>
+                    Trip from {route?.startTimestamp} to {route?.endTime} of{" "}
+                    {route?.distance} km wasting {route?.distance * 5} kg.
+                  </Dialog.Title>
+                  <Dialog.Description>
+                    This will permanently deactivate your account
+                  </Dialog.Description>
+                  {/* <p>This amount of Carbon could have been saved: {carbonSaved}</p> */}
+                  <button onClick={() => setIsOpen(false)}>Deactivate</button>
+                  <button onClick={() => setIsOpen(false)}>Cancel</button>
+                </Dialog.Panel>
+              </div>
+            </Dialog>
           </div>
           {!!data ? (
             <div className="flex flex-col text-xl gap-3">
