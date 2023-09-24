@@ -118,7 +118,7 @@ export function Heatmap(props: Props) {
 
   return (
     // Important! Always set the container height explicitly
-    <div className="h-110 w-[700px]">
+    <div className="h-110 w-[700px] shadow-xl ">
       <GoogleMapReact
         bootstrapURLKeys={{
           key: mapApiKey,

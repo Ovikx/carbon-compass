@@ -47,8 +47,8 @@ export default function MapRoute({ route, setSelectedRoute, selected }: Props) {
   return (
     // <div className="flex flex-row space-between">
     <button
-      className={`py-2 grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 hover:bg-gray-200  transition-all rounded-2xl ${
-        selected ? "bg-gray-200 scale-105" : ""
+      className={`py-2 grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 hover:bg-gray-100  transition-all duration-300 hover:shadow-lg rounded-2xl ${
+        selected ? "bg-gray-100 scale-105 shadow-lg" : ""
       }`}
       onClick={() => setSelectedRoute(route)}
     >
