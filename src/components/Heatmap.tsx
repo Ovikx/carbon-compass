@@ -1,6 +1,7 @@
 import GoogleMapReact from "google-map-react";
 import { CompositeData } from "../model/CompositeData";
 import ClipLoader from "react-spinners/ClipLoader";
+import { Route } from "../model/Route";
 
 interface HeatmapData {
   positions: {
@@ -17,6 +18,7 @@ interface HeatmapData {
 
 interface Props {
   compositeData: CompositeData | null;
+  selectedRoute: Route | null;
 }
 
 function parseData(compositeData: CompositeData): HeatmapData {

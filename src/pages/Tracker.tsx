@@ -9,6 +9,7 @@ import { CompositeData } from "../model/CompositeData";
 import TopTrips from "../components/TopTrips";
 import { flattenHierarchy } from "../utils/utils";
 import Modal from "react-modal";
+import { HeatmapWrapper } from "../components/HeatmapWrapper";
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -46,13 +47,7 @@ export function Tracker() {
             <h1 className="left-align text-4xl font-bold pt-90  mb-5">
               Your Carbon Heatmap
             </h1>
-            <div className="grid grid-cols-2 px-10 pt-10">
-              <Heatmap compositeData={data} />
-              {/* <p>HIIIIIIIIIIIIIIIIIIIIIIIIIII</p> */}
-              <div className="left-align text-lg mt-12 ml-10">
-                <TopTrips />
-              </div>
-            </div>
+            <HeatmapWrapper compositeData={data} />
           </div>
         </ParallaxLayer>
         <ParallaxLayer offset={2} speed={0.5}>
