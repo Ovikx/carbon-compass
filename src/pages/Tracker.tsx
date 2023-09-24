@@ -113,7 +113,7 @@ export function Tracker() {
           </div>
         </ParallaxLayer> */}
         <ParallaxLayer offset={2} speed={0.25} factor={2}>
-          <div className="left-align ">
+          <div className="left-align mt-96 ">
             <h2 className="left-align text-4xl font-bold pb-5">
               View All Past Data
             </h2>
