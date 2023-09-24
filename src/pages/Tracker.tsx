@@ -13,6 +13,12 @@ import { Route } from "../model/Route";
 import { Dialog } from "@headlessui/react";
 import TextField from "@mui/material/TextField";
 import { addLeaderboardToUser } from "../firebase/controller";
+import { motion } from "framer-motion";
+const transition = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 1 } },
+  exit: { opacity: 0, transition: { duration: 1 } },
+};
 
 export function Tracker() {
   const [data, setData] = useState<CompositeData | null>(null);
@@ -42,7 +48,13 @@ export function Tracker() {
   };
 
   return (
-    <div className="mt-24 overflow-auto max-h-[400px]">
+    <motion.div
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={transition}
+      className="mt-24 overflow-auto max-h-[400px]"
+    >
       <Parallax pages={7}>
         <ParallaxLayer
           speed={1}
@@ -316,6 +328,6 @@ export function Tracker() {
           />
         </ParallaxLayer>
       </Parallax>
-    </div>
+    </motion.div>
   );
 }
