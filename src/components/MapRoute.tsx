@@ -17,7 +17,7 @@ export default function MapRoute({
 }: Props) {
   return (
     // <div className="flex flex-row space-between">
-    <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <button className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 hover:bg-gray-100 hover:scale-105 transition-all rounded-2xl">
       <div className="flex flex-col ml-auto justify-center align-middle">
         <img src={Location} alt="location" className="w-12 ml-auto" />
         <p className="text-right">{city1}</p>
@@ -34,6 +34,6 @@ export default function MapRoute({
         {carbonUsage}
         <p className="text-2xl my-auto ml-2">kg</p>
       </p>
-    </div>
+    </button>
   );
 }
